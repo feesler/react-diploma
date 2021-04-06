@@ -9,7 +9,17 @@ import {
   topSalesReadSuccess,
   topSalesReadFailure,
 } from '../store/topSalesSlice';
-import { requestTopSales } from '../api';
+import {
+  categoriesReadRequest,
+  categoriesReadSuccess,
+  categoriesReadFailure,
+} from '../store/categoriesSlice';
+import {
+  productsReadRequest,
+  productsReadSuccess,
+  productsReadFailure,
+} from '../store/productsSlice';
+import { requestTopSales, requestCategories, requestItems } from '../api';
 
 // worker
 function* handleTopSalesRequest() {
@@ -23,11 +33,47 @@ function* handleTopSalesRequest() {
   }
 }
 
+// worker
+function* handleCategoriesRequest() {
+  try {
+    const retryCount = 3;
+    const retryDelay = 1000;
+    const data = yield retry(retryCount, retryDelay, requestCategories);
+    yield put(categoriesReadSuccess(data));
+  } catch (e) {
+    yield put(categoriesReadFailure(e.message));
+  }
+}
+
+// worker
+function* handleProductsRequest() {
+  try {
+    const retryCount = 3;
+    const retryDelay = 1000;
+    const data = yield retry(retryCount, retryDelay, requestItems);
+    yield put(productsReadSuccess(data));
+  } catch (e) {
+    yield put(productsReadFailure(e.message));
+  }
+}
+
 // watcher
 function* watchTopSalesSaga() {
   yield takeLatest(topSalesReadRequest.match, handleTopSalesRequest);
 }
 
+// watcher
+function* watchCategoriesSaga() {
+  yield takeLatest(categoriesReadRequest.match, handleCategoriesRequest);
+}
+
+// watcher
+function* watchProductsSaga() {
+  yield takeLatest(productsReadRequest.match, handleProductsRequest);
+}
+
 export default function* saga() {
   yield spawn(watchTopSalesSaga);
+  yield spawn(watchCategoriesSaga);
+  yield spawn(watchProductsSaga);
 }

@@ -4,24 +4,23 @@ import { topSalesReadRequest } from '../store/topSalesSlice';
 import View from './View.jsx';
 import Preloader from '../components/Preloader.jsx';
 import CatalogItem from '../components/CatalogItem.jsx';
+import CatalogList from '../components/CatalogList.jsx';
 
 function MainView() {
-  const { items, loading } = useSelector((state) => state.topSales);
+  const topSales = useSelector((state) => state.topSales);
   const dispatch = useDispatch();
-
-  console.log('items: ', items);
 
   useEffect(() => {
     dispatch(topSalesReadRequest());
-  }, []);
+  }, [dispatch]);
 
   return (
     <View>
       <section className="top-sales">
         <h2 className="text-center">Хиты продаж!</h2>
-        {loading && <Preloader />}
+        {topSales.loading && <Preloader />}
         <div className="row">
-          {items.map((item) => (
+          {topSales.items.map((item) => (
             <div key={item.id} className="col-4">
               <CatalogItem {...item} />
             </div>
@@ -29,11 +28,7 @@ function MainView() {
         </div>
       </section>
 
-      <section className="catalog">
-        <h2 className="text-center">Каталог</h2>
-        <Preloader />
-      </section>
-
+      <CatalogList />
     </View>
   );
 }
