@@ -12,7 +12,7 @@ function App() {
   return (
     <Switch>
       <Route path="/" exact component={MainView} />
-      <Route path="/catalog.html" exact component={CatalogView} />
+      <Route path="/catalog.html" component={CatalogView} />
       <Route path="/products/:id.html" component={ProductView} />
       <Route path="/cart.html" exact component={CartView} />
       <Route path="/about.html" exact component={AboutView} />

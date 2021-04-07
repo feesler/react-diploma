@@ -46,12 +46,13 @@ function* handleCategoriesRequest() {
 }
 
 // worker
-function* handleProductsRequest() {
+function* handleProductsRequest(action) {
   try {
     const retryCount = 3;
     const retryDelay = 1000;
-    const data = yield retry(retryCount, retryDelay, requestItems);
-    yield put(productsReadSuccess(data));
+    const options = { ...action.payload };
+    const data = yield retry(retryCount, retryDelay, requestItems, options);
+    yield put(productsReadSuccess({ data, options }));
   } catch (e) {
     yield put(productsReadFailure(e.message));
   }
