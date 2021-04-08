@@ -7,7 +7,9 @@ function CatalogView() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const categoryId = params.get('categoryId');
-  const query = params.get('q');
+  const query = params.get('q') ?? '';
+
+  console.log('[CatalogView] query: ', query);
 
   return (
     <View>

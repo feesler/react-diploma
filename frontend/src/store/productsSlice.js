@@ -28,6 +28,10 @@ const productsSlice = createSlice({
       const { data, options } = action.payload;
       const { offset, ...restOpts } = options;
 
+      if (restOpts.categoryId) {
+        restOpts.categoryId = Number(restOpts.categoryId);
+      }
+
       const newState = {
         ...state,
         loading: false,

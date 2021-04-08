@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
-import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { categoriesReadRequest } from '../store/categoriesSlice';
 import { productsReadRequest } from '../store/productsSlice';
 import Preloader from './Preloader.jsx';
 import CatalogItem from './CatalogItem.jsx';
+import CategoriesFilter from './CategoriesFilter.jsx';
 
 function CatalogList(props) {
   const { search, categoryId, query } = props;
@@ -19,6 +19,7 @@ function CatalogList(props) {
 
   console.log('[CatalogList] isLoading: ', isLoading);
   console.log('[CatalogList] products: ', products);
+  console.log('[CatalogList] query: ', query, ' q: ', q);
 
   useEffect(() => {
     dispatch(categoriesReadRequest());
@@ -33,16 +34,18 @@ function CatalogList(props) {
     dispatch(productsReadRequest(options));
   }, [dispatch, categoryId, query]);
 
-  const handleCategorySelect = (e) => {
-    if (!search) {
-      e.preventDefault();
-    }
-
-    const id = Number(e.target.dataset.id);
+  const handleCategorySelect = (id) => {
     const options = {};
+    const searchParams = new URLSearchParams();
     if (id) {
       options.categoryId = id;
+      searchParams.set('categoryId', id);
     }
+
+    if (search) {
+      history.push(`catalog.html?${searchParams}`);
+    }
+
     dispatch(productsReadRequest(options));
   };
 
@@ -82,25 +85,11 @@ function CatalogList(props) {
 
       { !isLoading
         && (
-          <ul className="catalog-categories nav justify-content-center">
-            <li className="nav-item">
-              <Link
-                className={classNames('nav-link', { active: !products.options.categoryId })}
-                to="catalog.html"
-                onClick={handleCategorySelect}
-              >Все</Link>
-            </li>
-            { categories.items.map((item) => (
-              <li key={`cat_${item.id}`} className="nav-item">
-                <Link
-                  className={classNames('nav-link', { active: products.options.categoryId === item.id })}
-                  to={`catalog.html?categoryId=${item.id}`}
-                  data-id={item.id}
-                  onClick={handleCategorySelect}
-                >{item.title}</Link>
-              </li>
-            ))}
-          </ul>
+          <CategoriesFilter
+            items={categories.items}
+            active={products.options.categoryId}
+            onSelect={handleCategorySelect}
+          />
         )
       }
 
@@ -108,7 +97,7 @@ function CatalogList(props) {
         && (
           <div className="row">
             {products.items.map((item) => (
-              <div key={item.id} className="col-4">
+              <div key={`prod_${item.id}`} className="col-4">
                 <CatalogItem {...item} />
               </div>
             ))}
