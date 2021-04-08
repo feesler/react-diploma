@@ -97,7 +97,7 @@ function CatalogList(props) {
         && (
           <div className="row">
             {products.items.map((item) => (
-              <div key={`prod_${item.id}`} className="col-4">
+              <div key={`prod_${item.id}`} className="col-4 catalog-item-container">
                 <CatalogItem {...item} />
               </div>
             ))}

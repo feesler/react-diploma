@@ -21,7 +21,7 @@ function MainView() {
         {topSales.loading && <Preloader />}
         <div className="row">
           {topSales.items.map((item) => (
-            <div key={item.id} className="col-4">
+            <div key={item.id} className="col-4 catalog-item-container">
               <CatalogItem {...item} />
             </div>
           ))}

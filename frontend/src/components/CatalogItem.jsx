@@ -14,11 +14,13 @@ function CatalogItem(props) {
 
   return (
     <div className="card catalog-item-card">
-      <img className="card-img-top img-fluid" src={image} alt={title} />
-      <div className="card-body">
+      <div className="card-img-top catalog-item-img">
+        <img className="img-fluid" src={image} alt={title} />
+      </div>
+      <div className="card-body catalog-item-card__body">
         <p className="card-text">{title}</p>
         <p className="card-text">{price} руб.</p>
-        <Link className="btn btn-outline-primary" to={`/products/${id}.html`}>Заказать</Link>
+        <Link className="btn btn-outline-primary to-cart-btn" to={`/products/${id}.html`}>Заказать</Link>
       </div>
     </div>
   );

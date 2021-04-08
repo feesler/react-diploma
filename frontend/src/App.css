@@ -575,3 +575,33 @@ h2,
   background-color: #727e86;
   border-color: #727e86;
 }
+
+/* Fixes */
+.catalog-item-container {
+  display: flex;
+}
+
+.catalog-item-card {
+  width: 100%;
+}
+
+.catalog-item-img {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  max-height: 30rem;
+}
+
+.catalog-item-card__body {
+  display: flex;
+  flex-flow: column;
+  align-items: baseline;
+
+  background-color: #efefef;
+}
+
+.to-cart-btn {
+  margin-top: auto;
+}
