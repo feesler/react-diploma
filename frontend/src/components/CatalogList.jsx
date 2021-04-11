@@ -85,7 +85,7 @@ function CatalogList(props) {
         )
       }
 
-      { !isLoading
+      { (categories.items.length > 0)
         && (
           <CategoriesFilter
             items={categories.items}
@@ -96,7 +96,7 @@ function CatalogList(props) {
         )
       }
 
-      { !isLoading
+      { (products.items.length > 0)
         && (
           <div className="row">
             {products.items.map((item) => (
