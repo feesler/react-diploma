@@ -13,6 +13,7 @@ const initialState = {
   error: null,
   options: { ...defaultOptions },
   moreAvailable: true,
+  searchQuery: '',
 };
 
 export const getProductsCount = (state) => state.products.items.length;
@@ -76,7 +77,12 @@ const productsSlice = createSlice({
     readNextFailure: (state, action) => ({
       ...state,
       loading: false,
-      error: action.payload.error,
+      error: action.payload,
+    }),
+
+    changeSearchQuery: (state, action) => ({
+      ...state,
+      searchQuery: action.payload,
     }),
   },
 });
@@ -88,5 +94,6 @@ export const {
   readNext,
   readNextSuccess,
   readNextFailure,
+  changeSearchQuery,
 } = productsSlice.actions;
 export default productsSlice.reducer;

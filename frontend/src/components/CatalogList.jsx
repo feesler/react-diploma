@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { categoriesReadRequest } from '../store/categoriesSlice';
-import { productsReadRequest, readNext } from '../store/productsSlice';
+import { productsReadRequest, readNext, changeSearchQuery } from '../store/productsSlice';
 import Preloader from './Preloader.jsx';
 import CatalogItem from './CatalogItem.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
 
 function CatalogList(props) {
   const { search, categoryId, query } = props;
-  const [q, setQuery] = useState(query);
   const history = useHistory();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
@@ -19,7 +18,7 @@ function CatalogList(props) {
 
   console.log('[CatalogList] isLoading: ', isLoading);
   console.log('[CatalogList] products: ', products);
-  console.log('[CatalogList] query: ', query, ' q: ', q);
+  console.log('[CatalogList] query: ', query, ' products.searchQuery: ', products.searchQuery);
 
   useEffect(() => {
     dispatch(categoriesReadRequest());
@@ -64,15 +63,15 @@ function CatalogList(props) {
     if (categoryId) {
       searchParams.set('categoryId', categoryId);
     }
-    if (q) {
-      searchParams.set('q', q);
+    if (products.searchQuery) {
+      searchParams.set('q', products.searchQuery);
     }
 
     history.push(`catalog.html?${searchParams}`);
   };
 
   const handleChange = (e) => {
-    setQuery(e.target.value);
+    dispatch(changeSearchQuery(e.target.value));
   };
 
   return (
@@ -81,7 +80,7 @@ function CatalogList(props) {
       { search
         && (
           <form className="catalog-search-form form-inline" onSubmit={handleSearch}>
-            <input className="form-control" placeholder="Поиск" value={q} onChange={handleChange} />
+            <input className="form-control" placeholder="Поиск" value={products.searchQuery} onChange={handleChange} />
           </form>
         )
       }
