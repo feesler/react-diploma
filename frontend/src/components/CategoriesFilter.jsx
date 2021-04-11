@@ -9,8 +9,17 @@ const noFilterItem = {
 };
 
 function CategoriesFilter(props) {
-  const { items, active, onSelect } = props;
+  const {
+    items,
+    active,
+    searchQuery,
+    onSelect,
+  } = props;
   const categories = [noFilterItem, ...items];
+  const params = new URLSearchParams();
+  if (searchQuery) {
+    params.set('q', searchQuery);
+  }
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -21,16 +30,19 @@ function CategoriesFilter(props) {
 
   return (
     <ul className="catalog-categories nav justify-content-center">
-      { categories.map((item) => (
-        <li key={`cat_${item.id}`} className="nav-item">
-          <Link
-            className={classNames('nav-link', { active: item.id === active })}
-            to={`catalog.html?categoryId=${item.id}`}
-            data-id={item.id}
-            onClick={handleClick}
-          >{item.title}</Link>
-        </li>
-      ))}
+      { categories.map((item) => {
+        params.set('categoryId', item.id);
+        return (
+          <li key={`cat_${item.id}`} className="nav-item">
+            <Link
+              className={classNames('nav-link', { active: item.id === active })}
+              to={`catalog.html?${params}`}
+              data-id={item.id}
+              onClick={handleClick}
+            >{item.title}</Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -40,12 +52,14 @@ CategoriesFilter.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
   })).isRequired,
-  active: PropTypes.number,
   onSelect: PropTypes.func.isRequired,
+  active: PropTypes.number,
+  searchQuery: PropTypes.string,
 };
 
 CategoriesFilter.defaultProps = {
   active: null,
+  searchQuery: '',
 };
 
 export default CategoriesFilter;

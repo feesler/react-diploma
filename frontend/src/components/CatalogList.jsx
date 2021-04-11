@@ -41,6 +41,10 @@ function CatalogList(props) {
       options.categoryId = id;
       searchParams.set('categoryId', id);
     }
+    if (query) {
+      searchParams.set('q', query);
+      options.q = query;
+    }
 
     if (search) {
       history.push(`catalog.html?${searchParams}`);
@@ -60,7 +64,9 @@ function CatalogList(props) {
     if (categoryId) {
       searchParams.set('categoryId', categoryId);
     }
-    searchParams.set('q', q);
+    if (q) {
+      searchParams.set('q', q);
+    }
 
     history.push(`catalog.html?${searchParams}`);
   };
@@ -85,6 +91,7 @@ function CatalogList(props) {
           <CategoriesFilter
             items={categories.items}
             active={products.options.categoryId}
+            searchQuery={query}
             onSelect={handleCategorySelect}
           />
         )
