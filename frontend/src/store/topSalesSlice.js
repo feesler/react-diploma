@@ -23,7 +23,7 @@ const topSalesSlice = createSlice({
     topSalesReadFailure: (state, action) => ({
       ...state,
       loading: false,
-      error: action.payload.error,
+      error: action.payload,
     }),
   },
 });

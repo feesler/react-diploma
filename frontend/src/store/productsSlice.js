@@ -48,7 +48,7 @@ const productsSlice = createSlice({
     productsReadFailure: (state, action) => ({
       ...state,
       loading: false,
-      error: action.payload.error,
+      error: action.payload,
     }),
 
     readNext: (state) => ({
