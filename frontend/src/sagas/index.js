@@ -3,6 +3,7 @@ import {
   spawn,
   retry,
   takeLatest,
+  select,
 } from 'redux-saga/effects';
 import {
   topSalesReadRequest,
@@ -18,8 +19,16 @@ import {
   productsReadRequest,
   productsReadSuccess,
   productsReadFailure,
+  readNext,
+  readNextSuccess,
+  readNextFailure,
+  getProductsCount,
 } from '../store/productsSlice';
-import { requestTopSales, requestCategories, requestItems } from '../api';
+import {
+  requestTopSales,
+  requestCategories,
+  requestItems,
+} from '../api';
 
 // worker
 function* handleTopSalesRequest() {
@@ -58,6 +67,17 @@ function* handleProductsRequest(action) {
   }
 }
 
+// worker
+function* handleNextProductsRequest() {
+  const productsCount = yield select(getProductsCount);
+  try {
+    const data = yield requestItems({ offset: productsCount });
+    yield put(readNextSuccess({ data, options: { offset: productsCount } }));
+  } catch (e) {
+    yield put(readNextFailure(e.message));
+  }
+}
+
 // watcher
 function* watchTopSalesSaga() {
   yield takeLatest(topSalesReadRequest.match, handleTopSalesRequest);
@@ -73,8 +93,14 @@ function* watchProductsSaga() {
   yield takeLatest(productsReadRequest.match, handleProductsRequest);
 }
 
+// watcher
+function* watchNextProductsSaga() {
+  yield takeLatest(readNext.match, handleNextProductsRequest);
+}
+
 export default function* saga() {
   yield spawn(watchTopSalesSaga);
   yield spawn(watchCategoriesSaga);
   yield spawn(watchProductsSaga);
+  yield spawn(watchNextProductsSaga);
 }

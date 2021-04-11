@@ -15,6 +15,8 @@ const initialState = {
   moreAvailable: true,
 };
 
+export const getProductsCount = (state) => state.products.items.length;
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,
@@ -37,21 +39,41 @@ const productsSlice = createSlice({
         loading: false,
         moreAvailable: (data.length >= CHUNK_SIZE),
         options: { ...restOpts },
+        items: [...data],
       };
-
-      const append = (
-        options.categoryId === state.options.categoryId
-        && options.q === state.options.q
-        && options.offset
-      );
-
-      newState.items = (append)
-        ? [...state.items, ...data]
-        : [...data];
 
       return newState;
     },
     productsReadFailure: (state, action) => ({
+      ...state,
+      loading: false,
+      error: action.payload.error,
+    }),
+
+    readNext: (state) => ({
+      ...state,
+      loading: true,
+      error: null,
+    }),
+    readNextSuccess: (state, action) => {
+      const { data, options } = action.payload;
+      const { offset, ...restOpts } = options;
+
+      if (restOpts.categoryId) {
+        restOpts.categoryId = Number(restOpts.categoryId);
+      }
+
+      const newState = {
+        ...state,
+        loading: false,
+        moreAvailable: (data.length >= CHUNK_SIZE),
+        options: { ...restOpts },
+        items: [...state.items, ...data],
+      };
+
+      return newState;
+    },
+    readNextFailure: (state, action) => ({
       ...state,
       loading: false,
       error: action.payload.error,
@@ -63,5 +85,8 @@ export const {
   productsReadRequest,
   productsReadSuccess,
   productsReadFailure,
+  readNext,
+  readNextSuccess,
+  readNextFailure,
 } = productsSlice.actions;
 export default productsSlice.reducer;

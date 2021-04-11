@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { categoriesReadRequest } from '../store/categoriesSlice';
-import { productsReadRequest } from '../store/productsSlice';
+import { productsReadRequest, readNext } from '../store/productsSlice';
 import Preloader from './Preloader.jsx';
 import CatalogItem from './CatalogItem.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
@@ -50,10 +50,7 @@ function CatalogList(props) {
   };
 
   const handleLoadMore = () => {
-    dispatch(productsReadRequest({
-      ...products.options,
-      offset: products.items.length,
-    }));
+    dispatch(readNext());
   };
 
   const handleSearch = (e) => {
