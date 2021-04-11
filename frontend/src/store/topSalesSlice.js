@@ -18,7 +18,7 @@ const topSalesSlice = createSlice({
     topSalesReadSuccess: (state, action) => ({
       ...state,
       loading: false,
-      items: [...state.items, ...action.payload],
+      items: [...action.payload],
     }),
     topSalesReadFailure: (state, action) => ({
       ...state,
