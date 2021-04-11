@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { categoriesReadRequest } from '../store/categoriesSlice';
 import { productsReadRequest, readNext, changeSearchQuery } from '../store/productsSlice';
 import Preloader from './Preloader.jsx';
-import CatalogItem from './CatalogItem.jsx';
+import ProductsList from './ProductsList.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
 
 function CatalogList(props) {
@@ -96,16 +96,8 @@ function CatalogList(props) {
         )
       }
 
-      { (products.items.length > 0)
-        && (
-          <div className="row">
-            {products.items.map((item) => (
-              <div key={`prod_${item.id}`} className="col-4 catalog-item-container">
-                <CatalogItem {...item} />
-              </div>
-            ))}
-          </div>
-        )
+      { (products.items.length > 0 || !isLoading)
+        && <ProductsList items={products.items} />
       }
 
       { products.moreAvailable && !isLoading

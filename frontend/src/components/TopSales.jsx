@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { topSalesReadRequest } from '../store/topSalesSlice';
 import Preloader from './Preloader.jsx';
-import CatalogItem from './CatalogItem.jsx';
+import ProductsList from './ProductsList.jsx';
 
 function TopSales() {
   const topSales = useSelector((state) => state.topSales);
@@ -20,13 +20,7 @@ function TopSales() {
     <section className="top-sales">
       <h2 className="text-center">Хиты продаж!</h2>
       {topSales.loading && <Preloader />}
-      <div className="row">
-        {topSales.items.map((item) => (
-          <div key={item.id} className="col-4 catalog-item-container">
-            <CatalogItem {...item} />
-          </div>
-        ))}
-      </div>
+      {!topSales.loading && <ProductsList items={topSales.items} />}
     </section>
   );
 }
