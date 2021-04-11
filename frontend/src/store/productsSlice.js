@@ -16,7 +16,8 @@ const initialState = {
   searchQuery: '',
 };
 
-export const getProductsCount = (state) => state.products.items.length;
+/* Selectors */
+export const getProducts = (state) => state.products;
 
 const productsSlice = createSlice({
   name: 'products',

@@ -22,7 +22,7 @@ import {
   readNext,
   readNextSuccess,
   readNextFailure,
-  getProductsCount,
+  getProducts,
 } from '../store/productsSlice';
 import {
   requestTopSales,
@@ -69,10 +69,17 @@ function* handleProductsRequest(action) {
 
 // worker
 function* handleNextProductsRequest() {
-  const productsCount = yield select(getProductsCount);
   try {
-    const data = yield requestItems({ offset: productsCount });
-    yield put(readNextSuccess({ data, options: { offset: productsCount } }));
+    const products = yield select(getProducts);
+    const options = { ...products.options, offset: products.items.length };
+
+    if (!products.moreAvailable) {
+      yield put(readNextSuccess({ data: [], options }));
+      return;
+    }
+
+    const data = yield requestItems(options);
+    yield put(readNextSuccess({ data, options }));
   } catch (e) {
     yield put(readNextFailure(e.message));
   }
