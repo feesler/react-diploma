@@ -6,9 +6,15 @@ export const initialOwner = {
   agreement: false,
 };
 
+export const initialValidation = {
+  phone: true,
+  address: true,
+};
+
 const initialState = {
   items: [],
   owner: { ...initialOwner },
+  validation: { ...initialValidation },
   loading: false,
   error: null,
 };
@@ -48,6 +54,14 @@ const cartSlice = createSlice({
         ...state.owner,
         [action.payload.name]: action.payload.value,
       },
+      validation: { ...initialValidation },
+    }),
+    invalidateField: (state, action) => ({
+      ...state,
+      validation: {
+        ...state.validation,
+        [action.payload.name]: false,
+      },
     }),
 
     orderRequest: (state) => ({
@@ -72,6 +86,7 @@ export const {
   addToCart,
   removeByIndex,
   changeOrderField,
+  invalidateField,
   orderRequest,
   orderRequestSuccess,
   orderRequestFailure,
