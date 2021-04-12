@@ -7,7 +7,7 @@
   },
   "version": "0.1.0",
   "description": "Netology React Course Diploma",
-  "homepage": "https://github.com/feesler/react-diploma",
+  "homepage": "https://feesler.github.io/react-diploma/",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
