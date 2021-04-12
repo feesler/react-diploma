@@ -4,7 +4,7 @@
 
 - [Task description](https://github.com/netology-code/ra16-diploma)
 - [Code style](https://github.com/netology-code/codestyle)
-
+- [Demo on GitHub pages](https://feesler.github.io/react-diploma)
 
 ## Available Scripts
 
