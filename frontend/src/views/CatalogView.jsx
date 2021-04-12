@@ -14,7 +14,7 @@ function CatalogView() {
 
   useEffect(() => {
     dispatch(changeSearchQuery(query));
-  }, [categoryId, query]);
+  }, [dispatch, query]);
 
   return (
     <View>

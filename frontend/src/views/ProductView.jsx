@@ -22,7 +22,7 @@ function ProductView() {
 
   useEffect(() => {
     dispatch(detailsReadRequest(id));
-  }, [id]);
+  }, [dispatch, id]);
 
   if (loading) {
     return (

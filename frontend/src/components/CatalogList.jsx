@@ -16,10 +16,6 @@ function CatalogList(props) {
   const products = useSelector((state) => state.products);
   const isLoading = (categories.loading || products.loading);
 
-  console.log('[CatalogList] isLoading: ', isLoading);
-  console.log('[CatalogList] products: ', products);
-  console.log('[CatalogList] query: ', query, ' products.searchQuery: ', products.searchQuery);
-
   useEffect(() => {
     dispatch(categoriesReadRequest());
 
