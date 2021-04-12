@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { getProductImage, validateImage } from '../store/imagesSlice';
+import ImageLoader from './ImageLoader.jsx';
 
 // TODO: format price
 function CatalogItem(props) {
@@ -13,31 +11,11 @@ function CatalogItem(props) {
     price,
     images,
   } = props;
-  const validImage = useSelector(getProductImage(id));
-  const dispatch = useDispatch();
-  const [index, setIndex] = useState(0);
-  const image = validImage ?? images[index];
-
-  const handleLoad = () => {
-    dispatch(validateImage({ id, url: image }));
-  };
-
-  const handleError = () => {
-    if (index < images.length - 1) {
-      setIndex(index + 1);
-    }
-  };
 
   return (
     <div className="card catalog-item-card">
-      <div className={classNames('card-img-top', 'catalog-item-img', { 'catalog-item-img_loading': !validImage })}>
-        <div className={classNames(
-          'card-img__placeholder',
-          { 'card-img__placeholder-1': (id % 2) },
-          { 'card-img__placeholder-2': !(id % 2) },
-        )}
-        >Нет изображения</div>
-        <img className="img-fluid" src={image} alt={title} onLoad={handleLoad} onError={handleError} />
+      <div className="card-img-top catalog-item-img">
+        <ImageLoader id={id} title={title} images={images} />
       </div>
       <div className="card-body catalog-item-card__body">
         <p className="card-text">{title}</p>
