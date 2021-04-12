@@ -1,6 +1,6 @@
 image: Ubuntu1804
 
-stack: node 10
+stack: node 15
 
 branches:
   only:
