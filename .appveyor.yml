@@ -8,6 +8,10 @@ branches:
 
 cache: node_modules
 
+environment:
+  access_token:
+    secure: ix1UQJnwBlnski3F89bYFComKT1T3kR1IffxW74MEaNEz/b4mmevnE0BDbhdN/9e
+
 install:
   - cd frontend
   - npm install
