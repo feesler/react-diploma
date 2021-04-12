@@ -6,6 +6,7 @@ import View from './View.jsx';
 import Preloader from '../components/Preloader.jsx';
 import { detailsReadRequest, selectSize, setQuantity } from '../store/productDetailsSlice';
 import { addToCart } from '../store/cartSlice';
+import ImageLoader from '../components/ImageLoader.jsx';
 
 function ProductView() {
   const { id } = useParams();
@@ -69,9 +70,7 @@ function ProductView() {
         <h2 className="text-center">{item.title}</h2>
         <div className="row">
           <div className="col-5">
-            {item.images
-              && <img src={item.images[0]} className="img-fluid" alt={item.title} />
-            }
+            {item && <ImageLoader id={item.id} title={item.title} images={item.images} />}
           </div>
           <div className="col-7">
             <table className="table table-bordered">
