@@ -28,3 +28,13 @@ export async function requestItems(options = {}) {
   }
   return response.json();
 }
+
+export async function requestItemDetails(id) {
+  const url = new URL(`${itemsURL}/${id}`);
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  return response.json();
+}

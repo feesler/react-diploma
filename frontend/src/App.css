@@ -638,3 +638,7 @@ h2,
 .card-img__placeholder-2 {
   background-image: url(./assets//svg/image-placeholder-2.svg);
 }
+
+.catalog-item-size {
+  cursor: pointer;
+}

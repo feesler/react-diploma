@@ -25,9 +25,15 @@ import {
   getProducts,
 } from '../store/productsSlice';
 import {
+  detailsReadRequest,
+  detailsReadSuccess,
+  detailsReadFailure,
+} from '../store/productDetailsSlice';
+import {
   requestTopSales,
   requestCategories,
   requestItems,
+  requestItemDetails,
 } from '../api';
 
 // worker
@@ -85,6 +91,19 @@ function* handleNextProductsRequest() {
   }
 }
 
+// worker
+function* handleDetailsRequest(action) {
+  try {
+    const retryCount = 3;
+    const retryDelay = 1000;
+    const id = action.payload;
+    const data = yield retry(retryCount, retryDelay, requestItemDetails, id);
+    yield put(detailsReadSuccess({ data }));
+  } catch (e) {
+    yield put(detailsReadFailure(e.message));
+  }
+}
+
 // watcher
 function* watchTopSalesSaga() {
   yield takeLatest(topSalesReadRequest.match, handleTopSalesRequest);
@@ -101,6 +120,11 @@ function* watchProductsSaga() {
 }
 
 // watcher
+function* watchDetailsSaga() {
+  yield takeLatest(detailsReadRequest.match, handleDetailsRequest);
+}
+
+// watcher
 function* watchNextProductsSaga() {
   yield takeLatest(readNext.match, handleNextProductsRequest);
 }
@@ -109,5 +133,6 @@ export default function* saga() {
   yield spawn(watchTopSalesSaga);
   yield spawn(watchCategoriesSaga);
   yield spawn(watchProductsSaga);
+  yield spawn(watchDetailsSaga);
   yield spawn(watchNextProductsSaga);
 }
