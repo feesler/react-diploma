@@ -1,15 +1,10 @@
 import React from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import headerLogo from '../assets/img/header-logo.png';
 import SearchWidget from './SearchWidget.jsx';
+import CartWidget from './CartWidget.jsx';
 
 function Header() {
-  const history = useHistory();
-
-  const handleCartClick = () => {
-    history.push('/cart.html');
-  };
-
   return (
     <header className="container">
       <div className="row">
@@ -37,12 +32,7 @@ function Header() {
               <div>
                 <div className="header-controls-pics">
                   <SearchWidget />
-
-                  {/* Do programmatic navigation on click to /cart.html */}
-                  <div className="header-controls-pic header-controls-cart" onClick={handleCartClick}>
-                    <div className="header-controls-cart-full">1</div>
-                    <div className="header-controls-cart-menu"></div>
-                  </div>
+                  <CartWidget />
                 </div>
               </div>
             </div>
