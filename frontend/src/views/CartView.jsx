@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import View from './View.jsx';
 import { removeByIndex } from '../store/cartSlice';
 import OrderForm from '../components/OrderForm.jsx';
@@ -34,7 +35,7 @@ function CartView() {
             {items.map((item, index) => (
               <tr key={`cart_${index}`}>
                 <th scope="row">{index + 1}</th>
-                <td><a href={`/products/${item.id}.html`}>{item.title}</a></td>
+                <td><Link to={`products/${item.id}.html`}>{item.title}</Link></td>
                 <td>{item.size}</td>
                 <td>{item.quantity}</td>
                 <td>{item.price} руб.</td>
