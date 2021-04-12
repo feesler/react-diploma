@@ -70,7 +70,8 @@ function ProductView() {
         <h2 className="text-center">{item.title}</h2>
         <div className="row">
           <div className="col-5">
-            {item && <ImageLoader id={item.id} title={item.title} images={item.images} />}
+            {item && item.id
+              && <ImageLoader id={item.id} title={item.title} images={item.images} />}
           </div>
           <div className="col-7">
             <table className="table table-bordered">
@@ -109,6 +110,7 @@ function ProductView() {
                     {availSizes.map(
                       (sz) => (
                         <span
+                          key={`size_${sz.size}`}
                           className={classNames('catalog-item-size', { selected: sz.size === selectedSize })}
                           data-size={sz.size}
                           onClick={handleSizeClick}

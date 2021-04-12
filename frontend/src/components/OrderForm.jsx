@@ -56,7 +56,13 @@ function OrderForm() {
           />
         </div>
         <div className="form-group form-check">
-          <input type="checkbox" className="form-check-input" id="agreement" onChange={handleChange} value={owner.agreement} />
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="agreement"
+            onChange={handleChange}
+            checked={owner.agreement}
+          />
           <label className="form-check-label" htmlFor="agreement">Согласен с правилами доставки</label>
         </div>
         <button

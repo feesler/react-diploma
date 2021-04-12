@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export const initialOwner = {
+  phone: '',
+  address: '',
+  agreement: false,
+};
+
 const initialState = {
   items: [],
-  owner: {},
+  owner: { ...initialOwner },
   loading: false,
   error: null,
 };
@@ -52,7 +58,7 @@ const cartSlice = createSlice({
       ...state,
       loading: false,
       items: [],
-      owner: {},
+      owner: { ...initialOwner },
     }),
     orderRequestFailure: (state, action) => ({
       ...state,

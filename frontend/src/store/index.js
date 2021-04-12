@@ -5,7 +5,7 @@ import categoriesReducer from './categoriesSlice';
 import productsReducer from './productsSlice';
 import productDetailsReducer from './productDetailsSlice';
 import imagesReducer from './imagesSlice';
-import cartReducer from './cartSlice';
+import cartReducer, { initialOwner } from './cartSlice';
 import { loadState, localStorageMiddleware } from './localStorage';
 import saga from '../sagas';
 
@@ -13,7 +13,7 @@ const preloadedCart = loadState('cart');
 const preloadedState = {
   cart: {
     items: preloadedCart ?? [],
-    owner: {},
+    owner: { ...initialOwner },
   },
 };
 
