@@ -2,6 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [],
+  owner: {},
+  loading: false,
+  error: null,
 };
 
 const cartSlice = createSlice({
@@ -32,11 +35,39 @@ const cartSlice = createSlice({
       ...state,
       items: state.items.filter((_, index) => index !== action.payload),
     }),
+
+    changeOrderField: (state, action) => ({
+      ...state,
+      owner: {
+        ...state.owner,
+        [action.payload.name]: action.payload.value,
+      },
+    }),
+
+    orderRequest: (state) => ({
+      ...state,
+      loading: true,
+    }),
+    orderRequestSuccess: (state) => ({
+      ...state,
+      loading: false,
+      items: [],
+      owner: {},
+    }),
+    orderRequestFailure: (state, action) => ({
+      ...state,
+      loading: false,
+      error: action.payload,
+    }),
   },
 });
 
 export const {
   addToCart,
   removeByIndex,
+  changeOrderField,
+  orderRequest,
+  orderRequestSuccess,
+  orderRequestFailure,
 } = cartSlice.actions;
 export default cartSlice.reducer;

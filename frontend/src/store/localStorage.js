@@ -27,7 +27,7 @@ export const localStorageMiddleware = ({ getState }) => (next) => (action) => {
   const result = next(action);
 
   const state = getState();
-  saveState('cart', state.cart);
+  saveState('cart', state.cart.items);
 
   return result;
 };

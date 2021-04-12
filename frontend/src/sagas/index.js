@@ -1,5 +1,6 @@
 import {
   put,
+  call,
   spawn,
   retry,
   takeLatest,
@@ -30,10 +31,16 @@ import {
   detailsReadFailure,
 } from '../store/productDetailsSlice';
 import {
+  orderRequest,
+  orderRequestSuccess,
+  orderRequestFailure,
+} from '../store/cartSlice';
+import {
   requestTopSales,
   requestCategories,
   requestItems,
   requestItemDetails,
+  submitOrder,
 } from '../api';
 
 // worker
@@ -104,6 +111,17 @@ function* handleDetailsRequest(action) {
   }
 }
 
+// worker
+function* handleOrderRequest(action) {
+  try {
+    const order = action.payload;
+    yield call(submitOrder, order);
+    yield put(orderRequestSuccess());
+  } catch (e) {
+    yield put(orderRequestFailure(e.message));
+  }
+}
+
 // watcher
 function* watchTopSalesSaga() {
   yield takeLatest(topSalesReadRequest.match, handleTopSalesRequest);
@@ -129,10 +147,16 @@ function* watchNextProductsSaga() {
   yield takeLatest(readNext.match, handleNextProductsRequest);
 }
 
+// watcher
+function* watchOrderSaga() {
+  yield takeLatest(orderRequest.match, handleOrderRequest);
+}
+
 export default function* saga() {
   yield spawn(watchTopSalesSaga);
   yield spawn(watchCategoriesSaga);
   yield spawn(watchProductsSaga);
   yield spawn(watchDetailsSaga);
   yield spawn(watchNextProductsSaga);
+  yield spawn(watchOrderSaga);
 }

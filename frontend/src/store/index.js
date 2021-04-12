@@ -12,7 +12,8 @@ import saga from '../sagas';
 const preloadedCart = loadState('cart');
 const preloadedState = {
   cart: {
-    items: (preloadedCart) ? preloadedCart.items : [],
+    items: preloadedCart ?? [],
+    owner: {},
   },
 };
 
