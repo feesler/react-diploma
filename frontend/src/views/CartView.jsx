@@ -6,7 +6,7 @@ import { removeByIndex } from '../store/cartSlice';
 import OrderForm from '../components/OrderForm.jsx';
 
 function CartView() {
-  const { items } = useSelector((state) => state.cart);
+  const { items, done } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const handleDelete = (index) => {
@@ -14,6 +14,17 @@ function CartView() {
   };
 
   const totalPrice = items.reduce((prev, item) => prev + (item.price * item.quantity), 0);
+
+  if (done) {
+    return (
+      <View>
+        <div className="order-success-message">
+          <h3>Ваш заказ отправлен в обработку</h3>
+          <h6>Менеджер свяжется с вами для уточнения деталей.</h6>
+        </div>
+      </View>
+    );
+  }
 
   return (
     <View>

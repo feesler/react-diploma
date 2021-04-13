@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeOrderField, invalidateField, orderRequest } from '../store/cartSlice';
+import Preloader from './Preloader.jsx';
 
 const orderCardStyle = {
   maxWidth: '30rem',
@@ -9,7 +10,13 @@ const orderCardStyle = {
 };
 
 function OrderForm() {
-  const { items, owner, validation } = useSelector((state) => state.cart);
+  const {
+    items,
+    owner,
+    validation,
+    loading,
+    error,
+  } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -53,6 +60,7 @@ function OrderForm() {
           <input
             className={classNames('form-control', { 'is-invalid': !validation.phone })}
             id="phone"
+            disabled={loading}
             placeholder="Ваш телефон"
             value={owner.phone}
             onChange={handleChange}
@@ -64,6 +72,7 @@ function OrderForm() {
           <input
             className={classNames('form-control', { 'is-invalid': !validation.address })}
             id="address"
+            disabled={loading}
             placeholder="Адрес доставки"
             value={owner.address}
             onChange={handleChange}
@@ -75,6 +84,7 @@ function OrderForm() {
             type="checkbox"
             className="form-check-input"
             id="agreement"
+            disabled={loading}
             onChange={handleChange}
             checked={owner.agreement}
           />
@@ -83,9 +93,13 @@ function OrderForm() {
         <button
           type="submit"
           className="btn btn-outline-secondary"
-          disabled={!owner.agreement}
+          disabled={!owner.agreement || loading}
         >Оформить</button>
+        { error && <div className="error-message">Произошла ошибка. Попробуйте повторить позднее.</div> }
       </form>
+      { loading
+        && <div className="dimmer"><Preloader /></div>
+      }
     </div>
   );
 }

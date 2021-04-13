@@ -5,16 +5,15 @@ import categoriesReducer from './categoriesSlice';
 import productsReducer from './productsSlice';
 import productDetailsReducer from './productDetailsSlice';
 import imagesReducer from './imagesSlice';
-import cartReducer, { initialOwner, initialValidation } from './cartSlice';
+import cartReducer, { initialState } from './cartSlice';
 import { loadState, localStorageMiddleware } from './localStorage';
 import saga from '../sagas';
 
 const preloadedCart = loadState('cart');
 const preloadedState = {
   cart: {
+    ...initialState,
     items: preloadedCart ?? [],
-    owner: { ...initialOwner },
-    validation: { ...initialValidation },
   },
 };
 
