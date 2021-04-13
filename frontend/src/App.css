@@ -577,6 +577,10 @@ h2,
 }
 
 /* Fixes */
+.banner {
+  height: 330px;
+}
+
 .catalog-item-container {
   display: flex;
 }
