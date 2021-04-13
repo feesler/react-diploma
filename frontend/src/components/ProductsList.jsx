@@ -6,7 +6,7 @@ function ProductsList(props) {
   const { items } = props;
 
   return (
-    <div className="row">
+    <div className="row cards-row">
       {(items.length > 0)
         ? items.map((item) => (
           <div key={`prod_${item.id}`} className="col-4 catalog-item-container">

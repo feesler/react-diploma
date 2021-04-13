@@ -69,11 +69,11 @@ function ProductView() {
       <section className="catalog-item">
         <h2 className="text-center">{item.title}</h2>
         <div className="row">
-          <div className="col-5">
+          <div className="col-5 catalog-item-image">
             {item && item.id
               && <ImageLoader id={item.id} title={item.title} images={item.images} />}
           </div>
-          <div className="col-7">
+          <div className="col-7 catalog-item-table">
             <table className="table table-bordered">
               <tbody>
                 <tr>
