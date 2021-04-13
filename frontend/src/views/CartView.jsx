@@ -1,12 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import View from './View.jsx';
 import { removeByIndex } from '../store/cartSlice';
 import OrderForm from '../components/OrderForm.jsx';
 
 function CartView() {
-  const { items, done } = useSelector((state) => state.cart);
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const submitResult = params.get('submit');
+  const { items } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const handleDelete = (index) => {
@@ -15,12 +18,13 @@ function CartView() {
 
   const totalPrice = items.reduce((prev, item) => prev + (item.price * item.quantity), 0);
 
-  if (done) {
+  if (submitResult === 'ok') {
     return (
       <View>
         <div className="order-success-message">
           <h3>Ваш заказ отправлен в обработку</h3>
           <h6>Менеджер свяжется с вами для уточнения деталей.</h6>
+          <Link to="/catalog.html">Продолжить покупки</Link>
         </div>
       </View>
     );
@@ -62,10 +66,8 @@ function CartView() {
           </tbody>
         </table>
       </section>
-      <section className="order">
-        <h2 className="text-center">Оформить заказ</h2>
-        <OrderForm />
-      </section>
+
+      <OrderForm />
     </View >
   );
 }

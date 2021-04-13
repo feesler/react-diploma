@@ -17,7 +17,6 @@ export const initialState = {
   validation: { ...initialValidation },
   loading: false,
   error: null,
-  done: false,
 };
 
 const cartSlice = createSlice({
@@ -29,7 +28,6 @@ const cartSlice = createSlice({
       const newState = {
         ...state,
         items: [...state.items],
-        done: false,
       };
 
       const index = state.items.findIndex((item) => item.id === data.id && item.size === data.size);
@@ -48,7 +46,6 @@ const cartSlice = createSlice({
     removeByIndex: (state, action) => ({
       ...state,
       items: state.items.filter((_, index) => index !== action.payload),
-      done: false,
     }),
 
     changeOrderField: (state, action) => ({
@@ -75,7 +72,6 @@ const cartSlice = createSlice({
     orderRequestSuccess: (state) => ({
       ...state,
       loading: false,
-      done: true,
       items: [],
       owner: { ...initialOwner },
     }),

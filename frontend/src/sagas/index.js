@@ -116,9 +116,10 @@ function* handleDetailsRequest(action) {
 // worker
 function* handleOrderRequest(action) {
   try {
-    const order = action.payload;
+    const { order, history } = action.payload;
     yield call(submitOrder, order);
     yield put(orderRequestSuccess());
+    yield put(history.push('/cart.html?submit=ok'));
   } catch (e) {
     yield put(orderRequestFailure(e.message));
     yield delay(10000);
