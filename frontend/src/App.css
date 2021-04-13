@@ -666,6 +666,7 @@ h2,
 }
 
 .error-message {
+  padding: 1rem 0;
   color: #d81313;
 }
 

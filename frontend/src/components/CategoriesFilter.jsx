@@ -28,6 +28,10 @@ function CategoriesFilter(props) {
     onSelect(id);
   };
 
+  if (!items.length) {
+    return null;
+  }
+
   return (
     <ul className="catalog-categories nav justify-content-center">
       { categories.map((item) => {

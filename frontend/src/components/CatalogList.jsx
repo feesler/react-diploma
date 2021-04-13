@@ -14,7 +14,9 @@ function CatalogList(props) {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const products = useSelector((state) => state.products);
-  const isLoading = (categories.loading || products.loading);
+  const isError = (categories.error || products.error);
+  const isLoading = !isError && (categories.loading || products.loading);
+  const contentAvailable = (categories.items.length > 0 && products.items.length > 0);
 
   useEffect(() => {
     dispatch(categoriesReadRequest());
@@ -81,7 +83,7 @@ function CatalogList(props) {
         )
       }
 
-      { (categories.items.length > 0)
+      { contentAvailable
         && (
           <CategoriesFilter
             items={categories.items}
@@ -92,11 +94,11 @@ function CatalogList(props) {
         )
       }
 
-      { (products.items.length > 0 || !isLoading)
+      { contentAvailable
         && <ProductsList items={products.items} />
       }
 
-      { products.moreAvailable && !isLoading
+      { contentAvailable && products.moreAvailable && !isLoading
         && (
           <div className="text-center">
             <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>
@@ -105,6 +107,10 @@ function CatalogList(props) {
       }
 
       { isLoading && <Preloader />}
+
+      { isError && (
+        <div className="text-center error-message">Произошла ошибка. Проверьте соединение и попробуйте повторить позднее.</div>
+      )}
     </section>
   );
 }

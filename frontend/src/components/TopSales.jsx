@@ -5,22 +5,23 @@ import Preloader from './Preloader.jsx';
 import ProductsList from './ProductsList.jsx';
 
 function TopSales() {
-  const topSales = useSelector((state) => state.topSales);
+  const { items, loading, error } = useSelector((state) => state.topSales);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(topSalesReadRequest());
   }, [dispatch]);
 
-  if (!topSales.loading && !topSales.items) {
+  if (!loading && !items.length && !error) {
     return null;
   }
 
   return (
     <section className="top-sales">
       <h2 className="text-center">Хиты продаж!</h2>
-      {topSales.loading && <Preloader />}
-      {!topSales.loading && <ProductsList items={topSales.items} />}
+      {loading && <Preloader />}
+      {error && <div className="text-center error-message">Произошла ошибка. Проверьте соединение и попробуйте повторить позднее.</div>}
+      {!loading && !error && <ProductsList items={items} />}
     </section>
   );
 }
