@@ -589,10 +589,6 @@ h2,
   height: 30rem;
 }
 
-.catalog-item-img .img-fluid {
-  width: 100%;
-}
-
 .catalog-item-card__body {
   display: flex;
   flex-flow: column;
@@ -611,6 +607,10 @@ h2,
   justify-content: center;
   overflow: hidden;
   height: 100%;
+  width: 100%;
+}
+
+.img-loader .img-fluid {
   width: 100%;
 }
 
