@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import headerLogo from '../assets/img/header-logo.png';
 import SearchWidget from './SearchWidget.jsx';
 import CartWidget from './CartWidget.jsx';
@@ -17,9 +17,9 @@ function Header() {
       <div className="row">
         <div className="container-fluid">
           <nav className="navbar navbar-expand-md navbar-light bg-light">
-            <a className="navbar-brand" href="/">
+            <Link className="navbar-brand" to="/">
               <img src={headerLogo} alt="Bosa Noga" />
-            </a>
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
