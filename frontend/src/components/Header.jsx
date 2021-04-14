@@ -21,14 +21,14 @@ function Header() {
               <img src={headerLogo} alt="Bosa Noga" />
             </a>
             <button
-              class="navbar-toggler"
+              className="navbar-toggler"
               type="button"
               aria-controls="navbarMain"
               aria-expanded="false"
               aria-label="Toggle navigation"
               onClick={toggleNavBar}
             >
-              <span class="navbar-toggler-icon"></span>
+              <span className="navbar-toggler-icon"></span>
             </button>
             <div
               id="navbarMain"
