@@ -8,6 +8,29 @@ import Preloader from './Preloader.jsx';
 import ProductsList from './ProductsList.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
 
+const createSearchParams = (obj) => {
+  const res = new URLSearchParams();
+  Object.keys().forEach((key) => res.set(key, obj[key]));
+  return res;
+};
+
+const createOptions = (obj) => {
+  const availOptions = ['categoryId', 'q'];
+  const options = {};
+
+  if (!obj) {
+    return options;
+  }
+
+  availOptions.forEach((key) => {
+    if (obj[key]) {
+      options[key] = obj[key];
+    }
+  });
+
+  return options;
+};
+
 function CatalogList(props) {
   const { search, categoryId, query } = props;
   const history = useHistory();
@@ -21,29 +44,15 @@ function CatalogList(props) {
   useEffect(() => {
     dispatch(categoriesReadRequest());
 
-    const options = {};
-    if (categoryId) {
-      options.categoryId = categoryId;
-    }
-    if (query) {
-      options.q = query;
-    }
+    const options = createOptions({ categoryId, q: query });
     dispatch(productsReadRequest(options));
   }, [dispatch, categoryId, query]);
 
   const handleCategorySelect = (id) => {
-    const options = {};
-    const searchParams = new URLSearchParams();
-    if (id) {
-      options.categoryId = id;
-      searchParams.set('categoryId', id);
-    }
-    if (query) {
-      searchParams.set('q', query);
-      options.q = query;
-    }
+    const options = createOptions({ categoryId: id, q: query });
 
     if (search) {
+      const searchParams = createSearchParams(options);
       history.push(`catalog.html?${searchParams}`);
     }
 
@@ -57,13 +66,8 @@ function CatalogList(props) {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    const searchParams = new URLSearchParams();
-    if (categoryId) {
-      searchParams.set('categoryId', categoryId);
-    }
-    if (products.searchQuery) {
-      searchParams.set('q', products.searchQuery);
-    }
+    const options = createOptions({ categoryId, q: products.searchQuery });
+    const searchParams = createSearchParams(options);
 
     history.push(`catalog.html?${searchParams}`);
   };
