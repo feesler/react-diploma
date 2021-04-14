@@ -23,7 +23,7 @@ const categoriesSlice = createSlice({
     categoriesReadFailure: (state, action) => ({
       ...state,
       loading: false,
-      error: action.payload.error,
+      error: action.payload,
     }),
   },
 });
