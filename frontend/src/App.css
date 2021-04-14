@@ -577,8 +577,10 @@ h2,
 }
 
 /* Fixes */
-.banner {
-  height: 330px;
+.banner-header {
+  max-width: 100%;
+  top: auto;
+  bottom: 10px;
 }
 
 .catalog-item-container {
@@ -685,7 +687,21 @@ h2,
   justify-content: flex-end;
 }
 
+@media (max-width: 375px) {
+  .banner-header {
+    height: 32px;
+    font-size: 16px;
+    line-height: 32px;
+  }
+}
+
 @media (max-width: 576px) {
+  .banner-header {
+    font-size: 24px;
+    line-height: 54px;
+    height: 54px;
+  }
+
   .catalog-item-image {
     max-width: 400px;
     flex: 1 1 auto;
@@ -725,10 +741,6 @@ h2,
 }
 
 @media (max-width: 992px) {
-  .banner {
-    height: 250px;
-  }
-
   .banner-header {
     margin-bottom: 0.5em;
   }
