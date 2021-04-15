@@ -44,12 +44,14 @@ import {
   requestItemDetails,
   submitOrder,
 } from '../api';
+import { createOptions } from '../utils';
+
+const retryCount = 3;
+const retryDelay = 1000;
 
 // worker
 function* handleTopSalesRequest() {
   try {
-    const retryCount = 3;
-    const retryDelay = 1000;
     const data = yield retry(retryCount, retryDelay, requestTopSales);
     yield put(topSalesReadSuccess(data));
   } catch (e) {
@@ -60,8 +62,6 @@ function* handleTopSalesRequest() {
 // worker
 function* handleCategoriesRequest() {
   try {
-    const retryCount = 3;
-    const retryDelay = 1000;
     const data = yield retry(retryCount, retryDelay, requestCategories);
     yield put(categoriesReadSuccess(data));
   } catch (e) {
@@ -72,8 +72,6 @@ function* handleCategoriesRequest() {
 // worker
 function* handleProductsRequest(action) {
   try {
-    const retryCount = 3;
-    const retryDelay = 1000;
     const options = { ...action.payload };
     const data = yield retry(retryCount, retryDelay, requestItems, options);
     yield put(productsReadSuccess({ data, options }));
@@ -86,14 +84,16 @@ function* handleProductsRequest(action) {
 function* handleNextProductsRequest() {
   try {
     const products = yield select(getProducts);
-    const options = { ...products.options, offset: products.items.length };
-
-    if (!products.moreAvailable) {
-      yield put(readNextSuccess({ data: [], options }));
-      return;
+    if (!products || !products.items) {
+      throw new Error('Invalid state');
     }
 
-    const data = yield requestItems(options);
+    const options = createOptions(products.options);
+    options.offset = products.items.length;
+
+    const data = (products.moreAvailable)
+      ? yield retry(retryCount, retryDelay, requestItems, options)
+      : [];
     yield put(readNextSuccess({ data, options }));
   } catch (e) {
     yield put(readNextFailure(e.message));
@@ -103,8 +103,6 @@ function* handleNextProductsRequest() {
 // worker
 function* handleDetailsRequest(action) {
   try {
-    const retryCount = 3;
-    const retryDelay = 1000;
     const id = action.payload;
     const data = yield retry(retryCount, retryDelay, requestItemDetails, id);
     yield put(detailsReadSuccess({ data }));

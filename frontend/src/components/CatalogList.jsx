@@ -1,62 +1,59 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { categoriesReadRequest } from '../store/categoriesSlice';
 import { productsReadRequest, readNext, changeSearchQuery } from '../store/productsSlice';
 import Preloader from './Preloader.jsx';
 import ProductsList from './ProductsList.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
-
-const createSearchParams = (obj) => {
-  const res = new URLSearchParams();
-  Object.keys().forEach((key) => res.set(key, obj[key]));
-  return res;
-};
-
-const createOptions = (obj) => {
-  const availOptions = ['categoryId', 'q'];
-  const options = {};
-
-  if (!obj) {
-    return options;
-  }
-
-  availOptions.forEach((key) => {
-    if (obj[key]) {
-      options[key] = obj[key];
-    }
-  });
-
-  return options;
-};
+import { createOptions } from '../utils';
 
 function CatalogList(props) {
-  const { search, categoryId, query } = props;
-  const history = useHistory();
+  const {
+    search,
+    categoryId,
+    query,
+    onFilterChange,
+  } = props;
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const products = useSelector((state) => state.products);
   const isError = (categories.error || products.error);
-  const isLoading = !isError && (categories.loading || products.loading);
-  const contentAvailable = (categories.items.length > 0 && products.items.length > 0);
+  const { loading, loadingNext } = products;
+  const isLoading = !isError && (categories.loading || loading || loadingNext);
+  const contentAvailable = (!!categories.items && !!products.items);
 
   useEffect(() => {
-    dispatch(categoriesReadRequest());
+    if (!categories.items) {
+      dispatch(categoriesReadRequest());
+    }
 
     const options = createOptions({ categoryId, q: query });
     dispatch(productsReadRequest(options));
   }, [dispatch, categoryId, query]);
 
   const handleCategorySelect = (id) => {
-    const options = createOptions({ categoryId: id, q: query });
+    const options = createOptions({
+      ...products.form,
+      categoryId: id,
+    });
 
-    if (search) {
-      const searchParams = createSearchParams(options);
-      history.push(`catalog.html?${searchParams}`);
+    if (onFilterChange) {
+      onFilterChange(options);
     }
 
     dispatch(productsReadRequest(options));
+  };
+
+  const handleRetry = () => {
+    if (!categories.items) {
+      dispatch(categoriesReadRequest());
+    }
+
+    if (!products.items) {
+      const options = createOptions(products.form);
+      dispatch(productsReadRequest(options));
+    }
   };
 
   const handleLoadMore = () => {
@@ -66,10 +63,10 @@ function CatalogList(props) {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    const options = createOptions({ categoryId, q: products.searchQuery });
-    const searchParams = createSearchParams(options);
-
-    history.push(`catalog.html?${searchParams}`);
+    if (onFilterChange) {
+      const options = createOptions(products.form);
+      onFilterChange(options);
+    }
   };
 
   const handleChange = (e) => {
@@ -82,12 +79,12 @@ function CatalogList(props) {
       { search
         && (
           <form className="catalog-search-form form-inline" onSubmit={handleSearch}>
-            <input className="form-control" placeholder="Поиск" value={products.searchQuery} onChange={handleChange} />
+            <input className="form-control" placeholder="Поиск" value={products.form.q} onChange={handleChange} />
           </form>
         )
       }
 
-      { contentAvailable
+      { categories.items
         && (
           <CategoriesFilter
             items={categories.items}
@@ -98,11 +95,19 @@ function CatalogList(props) {
         )
       }
 
-      { contentAvailable
+      { contentAvailable && !loading
         && <ProductsList items={products.items} />
       }
 
-      { contentAvailable && products.moreAvailable && !isLoading
+      { !contentAvailable && !isLoading && !loadingNext
+        && (
+          <div className="text-center">
+            <button className="btn btn-outline-primary" onClick={handleRetry}>Повторить</button>
+          </div>
+        )
+      }
+
+      { contentAvailable && products.moreAvailable && !isLoading && !loadingNext
         && (
           <div className="text-center">
             <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>
@@ -122,11 +127,13 @@ function CatalogList(props) {
 CatalogList.propTypes = {
   search: PropTypes.bool,
   query: PropTypes.string,
+  onFilterChange: PropTypes.func,
 };
 
 CatalogList.defaultProps = {
   search: false,
   query: '',
+  onFilterChange: null,
 };
 
 export default CatalogList;

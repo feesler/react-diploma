@@ -4,16 +4,22 @@ const CHUNK_SIZE = 6;
 
 const defaultOptions = {
   categoryId: null,
-  query: null,
+  q: null,
 };
 
 const initialState = {
-  items: [],
+  items: null,
   loading: false,
+  loadingNext: false,
   error: null,
+  /* Curent options in case of successfull request */
   options: { ...defaultOptions },
+  /* Form data */
+  form: {
+    q: '',
+    categoryId: null,
+  },
   moreAvailable: true,
-  searchQuery: '',
 };
 
 /* Selectors */
@@ -23,18 +29,16 @@ const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    productsReadRequest: (state) => ({
+    productsReadRequest: (state, action) => ({
       ...state,
       loading: true,
+      items: null,
       error: null,
+      form: { ...action.payload },
     }),
     productsReadSuccess: (state, action) => {
       const { data, options } = action.payload;
       const { offset, ...restOpts } = options;
-
-      if (restOpts.categoryId) {
-        restOpts.categoryId = Number(restOpts.categoryId);
-      }
 
       const newState = {
         ...state,
@@ -54,20 +58,16 @@ const productsSlice = createSlice({
 
     readNext: (state) => ({
       ...state,
-      loading: true,
+      loadingNext: true,
       error: null,
     }),
     readNextSuccess: (state, action) => {
       const { data, options } = action.payload;
       const { offset, ...restOpts } = options;
 
-      if (restOpts.categoryId) {
-        restOpts.categoryId = Number(restOpts.categoryId);
-      }
-
       const newState = {
         ...state,
-        loading: false,
+        loadingNext: false,
         moreAvailable: (data.length >= CHUNK_SIZE),
         options: { ...restOpts },
         items: [...state.items, ...data],
@@ -77,13 +77,16 @@ const productsSlice = createSlice({
     },
     readNextFailure: (state, action) => ({
       ...state,
-      loading: false,
+      loadingNext: false,
       error: action.payload,
     }),
 
     changeSearchQuery: (state, action) => ({
       ...state,
-      searchQuery: action.payload,
+      form: {
+        ...state.form,
+        q: action.payload,
+      },
     }),
   },
 });
