@@ -80,11 +80,6 @@ const cartSlice = createSlice({
       loading: false,
       error: action.payload,
     }),
-
-    resetError: (state) => ({
-      ...state,
-      error: null,
-    }),
   },
 });
 
@@ -96,6 +91,5 @@ export const {
   orderRequest,
   orderRequestSuccess,
   orderRequestFailure,
-  resetError,
 } = cartSlice.actions;
 export default cartSlice.reducer;

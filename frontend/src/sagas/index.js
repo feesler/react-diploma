@@ -5,7 +5,6 @@ import {
   retry,
   takeLatest,
   select,
-  delay,
 } from 'redux-saga/effects';
 import {
   topSalesReadRequest,
@@ -35,7 +34,6 @@ import {
   orderRequest,
   orderRequestSuccess,
   orderRequestFailure,
-  resetError,
 } from '../store/cartSlice';
 import {
   requestTopSales,
@@ -120,8 +118,6 @@ function* handleOrderRequest(action) {
     yield put(history.push('/cart.html?submit=ok'));
   } catch (e) {
     yield put(orderRequestFailure(e.message));
-    yield delay(10000);
-    yield put(resetError());
   }
 }
 
