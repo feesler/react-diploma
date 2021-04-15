@@ -30,7 +30,7 @@ function CatalogList(props) {
 
     const options = createOptions({ categoryId, q: query });
     dispatch(productsReadRequest(options));
-  }, [dispatch, categoryId, query]);
+  }, [dispatch, categories.items, categoryId, query]);
 
   const handleCategorySelect = (id) => {
     const options = createOptions({
