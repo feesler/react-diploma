@@ -12,8 +12,10 @@ const initialState = {
   loading: false,
   loadingNext: false,
   error: null,
-  /* Curent options in case of successfull request */
-  options: { ...defaultOptions },
+  /* Current filter of loaded items */
+  current: { ...defaultOptions },
+  /* Currently sending filter */
+  sending: { ...defaultOptions },
   /* Form data */
   form: {
     q: '',
@@ -34,17 +36,18 @@ const productsSlice = createSlice({
       loading: true,
       items: null,
       error: null,
+      sending: { ...action.payload },
       form: { ...action.payload },
     }),
     productsReadSuccess: (state, action) => {
-      const { data, options } = action.payload;
-      const { offset, ...restOpts } = options;
+      const { data } = action.payload;
+      const { offset, ...rest } = state.sending;
 
       const newState = {
         ...state,
         loading: false,
         moreAvailable: (data.length >= CHUNK_SIZE),
-        options: { ...restOpts },
+        options: { ...rest },
         items: [...data],
       };
 
@@ -62,14 +65,14 @@ const productsSlice = createSlice({
       error: null,
     }),
     readNextSuccess: (state, action) => {
-      const { data, options } = action.payload;
-      const { offset, ...restOpts } = options;
+      const { data } = action.payload;
+      const { offset, ...rest } = state.sending;
 
       const newState = {
         ...state,
         loadingNext: false,
         moreAvailable: (data.length >= CHUNK_SIZE),
-        options: { ...restOpts },
+        options: { ...rest },
         items: [...state.items, ...data],
       };
 
@@ -88,6 +91,13 @@ const productsSlice = createSlice({
         q: action.payload,
       },
     }),
+    changeCategoryId: (state, action) => ({
+      ...state,
+      form: {
+        ...state.form,
+        categoryId: action.payload,
+      },
+    }),
   },
 });
 
@@ -99,5 +109,6 @@ export const {
   readNextSuccess,
   readNextFailure,
   changeSearchQuery,
+  changeCategoryId,
 } = productsSlice.actions;
 export default productsSlice.reducer;

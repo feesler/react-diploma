@@ -42,7 +42,6 @@ import {
   requestItemDetails,
   submitOrder,
 } from '../api';
-import { createOptions } from '../utils';
 
 const retryCount = 3;
 const retryDelay = 1000;
@@ -86,8 +85,10 @@ function* handleNextProductsRequest() {
       throw new Error('Invalid state');
     }
 
-    const options = createOptions(products.options);
-    options.offset = products.items.length;
+    const options = {
+      ...products.options,
+      offset: products.items.length,
+    };
 
     const data = (products.moreAvailable)
       ? yield retry(retryCount, retryDelay, requestItems, options)

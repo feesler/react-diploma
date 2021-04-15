@@ -1,26 +1,23 @@
+/* eslint-disable import/prefer-default-export */
+
+const availOptions = ['categoryId', 'q'];
+
+/**
+ * Create URLSearchParams instance from specified object,
+ * but skips empty values (null, '', undefined, NaN)
+ */
 export const createSearchParams = (obj) => {
   const res = new URLSearchParams();
 
-  if (obj) {
-    Object.keys(obj).forEach((key) => res.set(key, obj[key]));
-  }
-
-  return res;
-};
-
-export const createOptions = (obj) => {
-  const availOptions = ['categoryId', 'q'];
-  const options = {};
-
   if (!obj) {
-    return options;
+    return res;
   }
 
   availOptions.forEach((key) => {
     if (obj[key]) {
-      options[key] = obj[key];
+      res.set(key, obj[key]);
     }
   });
 
-  return options;
+  return res;
 };

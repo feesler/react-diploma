@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { createSearchParams } from '../utils';
 
 const noFilterItem = {
   id: null,
@@ -16,10 +17,9 @@ function CategoriesFilter(props) {
     onSelect,
   } = props;
   const categories = [noFilterItem, ...items];
-  const params = new URLSearchParams();
-  if (searchQuery) {
-    params.set('q', searchQuery);
-  }
+  const urlParams = { q: searchQuery };
+
+  console.log('[CategoriesFilter] active: ', active);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -35,7 +35,8 @@ function CategoriesFilter(props) {
   return (
     <ul className="catalog-categories nav justify-content-center">
       { categories.map((item) => {
-        params.set('categoryId', item.id);
+        const params = createSearchParams({ ...urlParams, categoryId: item.id });
+
         return (
           <li key={`cat_${item.id}`} className="nav-item">
             <Link

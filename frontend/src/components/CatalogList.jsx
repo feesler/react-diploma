@@ -6,13 +6,10 @@ import { productsReadRequest, readNext, changeSearchQuery } from '../store/produ
 import Preloader from './Preloader.jsx';
 import ProductsList from './ProductsList.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
-import { createOptions } from '../utils';
 
 function CatalogList(props) {
   const {
     search,
-    categoryId,
-    query,
     onFilterChange,
   } = props;
   const dispatch = useDispatch();
@@ -27,22 +24,23 @@ function CatalogList(props) {
     if (!categories.items) {
       dispatch(categoriesReadRequest());
     }
-
-    const options = createOptions({ categoryId, q: query });
-    dispatch(productsReadRequest(options));
-  }, [dispatch, categories.items, categoryId, query]);
-
+  }, [dispatch, categories.items]);
+  /*
+    useEffect(() => {
+      dispatch(productsReadRequest({ categoryId, q }));
+    }, [dispatch, categoryId, q]);
+  */
   const handleCategorySelect = (id) => {
-    const options = createOptions({
+    const filter = {
       ...products.form,
       categoryId: id,
-    });
+    };
 
     if (onFilterChange) {
-      onFilterChange(options);
+      onFilterChange(filter);
     }
 
-    dispatch(productsReadRequest(options));
+    dispatch(productsReadRequest(filter));
   };
 
   const handleRetry = () => {
@@ -51,8 +49,7 @@ function CatalogList(props) {
     }
 
     if (!products.items) {
-      const options = createOptions(products.form);
-      dispatch(productsReadRequest(options));
+      dispatch(productsReadRequest({ ...products.sending }));
     }
   };
 
@@ -64,9 +61,10 @@ function CatalogList(props) {
     e.preventDefault();
 
     if (onFilterChange) {
-      const options = createOptions(products.form);
-      onFilterChange(options);
+      onFilterChange({ ...products.form });
     }
+
+    dispatch(productsReadRequest({ ...products.form }));
   };
 
   const handleChange = (e) => {
@@ -88,8 +86,8 @@ function CatalogList(props) {
         && (
           <CategoriesFilter
             items={categories.items}
-            active={products.options.categoryId}
-            searchQuery={query}
+            active={products.form.categoryId}
+            searchQuery={products.form.q}
             onSelect={handleCategorySelect}
           />
         )
@@ -126,13 +124,11 @@ function CatalogList(props) {
 
 CatalogList.propTypes = {
   search: PropTypes.bool,
-  query: PropTypes.string,
   onFilterChange: PropTypes.func,
 };
 
 CatalogList.defaultProps = {
   search: false,
-  query: '',
   onFilterChange: null,
 };
 

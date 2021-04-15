@@ -1,3 +1,5 @@
+import { createSearchParams } from '../utils';
+
 const topSalesURL = process.env.REACT_APP_TOP_SALES_URL;
 const categoriesURL = process.env.REACT_APP_CATEGORIES_URL;
 const itemsURL = process.env.REACT_APP_ITEMS_URL;
@@ -20,8 +22,8 @@ export async function requestCategories() {
 }
 
 export async function requestItems(options = {}) {
-  const url = new URL(itemsURL);
-  Object.keys(options).forEach((key) => url.searchParams.set(key, options[key]));
+  const params = createSearchParams(options);
+  const url = new URL(`${itemsURL}?${params}`);
 
   const response = await fetch(url);
   if (!response.ok) {
