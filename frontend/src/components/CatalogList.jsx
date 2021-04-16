@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { categoriesReadRequest } from '../store/categoriesSlice';
-import { productsReadRequest, readNext, changeSearchQuery } from '../store/productsSlice';
+import {
+  productsReadRequest,
+  readNext,
+  changeSearchQuery,
+  changeCategoryId,
+} from '../store/productsSlice';
 import Preloader from './Preloader.jsx';
 import ProductsList from './ProductsList.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
@@ -25,14 +30,12 @@ function CatalogList(props) {
       dispatch(categoriesReadRequest());
     }
   }, [dispatch, categories.items]);
-  /*
-    useEffect(() => {
-      dispatch(productsReadRequest({ categoryId, q }));
-    }, [dispatch, categoryId, q]);
-  */
+
   const handleCategorySelect = (id) => {
+    dispatch(changeCategoryId(id));
+
     const filter = {
-      ...products.form,
+      ...products.current,
       categoryId: id,
     };
 
@@ -60,11 +63,16 @@ function CatalogList(props) {
   const handleSearch = (e) => {
     e.preventDefault();
 
+    const filter = {
+      ...products.current,
+      q: products.form.q,
+    };
+
     if (onFilterChange) {
-      onFilterChange({ ...products.form });
+      onFilterChange(filter);
     }
 
-    dispatch(productsReadRequest({ ...products.form }));
+    dispatch(productsReadRequest(filter));
   };
 
   const handleChange = (e) => {
@@ -87,7 +95,7 @@ function CatalogList(props) {
           <CategoriesFilter
             items={categories.items}
             active={products.form.categoryId}
-            searchQuery={products.form.q}
+            searchQuery={products.current.q}
             onSelect={handleCategorySelect}
           />
         )

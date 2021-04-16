@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-const availOptions = ['categoryId', 'q'];
+const availOptions = ['categoryId', 'q', 'offset'];
 
 /**
  * Create URLSearchParams instance from specified object,

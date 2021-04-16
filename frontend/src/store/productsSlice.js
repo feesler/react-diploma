@@ -2,9 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const CHUNK_SIZE = 6;
 
-const defaultOptions = {
+const defaultFilter = {
   categoryId: null,
   q: null,
+};
+
+const defaultForm = {
+  categoryId: null,
+  q: '',
 };
 
 const initialState = {
@@ -13,14 +18,11 @@ const initialState = {
   loadingNext: false,
   error: null,
   /* Current filter of loaded items */
-  current: { ...defaultOptions },
+  current: { ...defaultFilter },
   /* Currently sending filter */
-  sending: { ...defaultOptions },
+  sending: { ...defaultFilter },
   /* Form data */
-  form: {
-    q: '',
-    categoryId: null,
-  },
+  form: { ...defaultForm },
   moreAvailable: true,
 };
 
@@ -37,7 +39,6 @@ const productsSlice = createSlice({
       items: null,
       error: null,
       sending: { ...action.payload },
-      form: { ...action.payload },
     }),
     productsReadSuccess: (state, action) => {
       const { data } = action.payload;
@@ -47,7 +48,7 @@ const productsSlice = createSlice({
         ...state,
         loading: false,
         moreAvailable: (data.length >= CHUNK_SIZE),
-        options: { ...rest },
+        current: { ...rest },
         items: [...data],
       };
 
@@ -72,7 +73,7 @@ const productsSlice = createSlice({
         ...state,
         loadingNext: false,
         moreAvailable: (data.length >= CHUNK_SIZE),
-        options: { ...rest },
+        current: { ...rest },
         items: [...state.items, ...data],
       };
 

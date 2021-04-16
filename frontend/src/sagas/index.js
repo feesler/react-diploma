@@ -69,9 +69,9 @@ function* handleCategoriesRequest() {
 // worker
 function* handleProductsRequest(action) {
   try {
-    const options = { ...action.payload };
-    const data = yield retry(retryCount, retryDelay, requestItems, options);
-    yield put(productsReadSuccess({ data, options }));
+    const filter = { ...action.payload };
+    const data = yield retry(retryCount, retryDelay, requestItems, filter);
+    yield put(productsReadSuccess({ data }));
   } catch (e) {
     yield put(productsReadFailure(e.message));
   }
@@ -85,15 +85,15 @@ function* handleNextProductsRequest() {
       throw new Error('Invalid state');
     }
 
-    const options = {
-      ...products.options,
+    const filter = {
+      ...products.current,
       offset: products.items.length,
     };
 
     const data = (products.moreAvailable)
-      ? yield retry(retryCount, retryDelay, requestItems, options)
+      ? yield retry(retryCount, retryDelay, requestItems, filter)
       : [];
-    yield put(readNextSuccess({ data, options }));
+    yield put(readNextSuccess({ data }));
   } catch (e) {
     yield put(readNextFailure(e.message));
   }
