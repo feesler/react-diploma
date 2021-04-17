@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { changeSearchQuery } from '../store/productsSlice';
+
+const useFocus = () => {
+  const ref = useRef(null);
+  const setFocus = () => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+  };
+
+  return [ref, setFocus];
+};
 
 function SearchWidget() {
   const [formVisible, setFormVisibility] = useState(false);
   const [query, setQuery] = useState('');
   const history = useHistory();
   const dispatch = useDispatch();
+  const [inputRef, setFocus] = useFocus();
+
+  useEffect(() => {
+    if (formVisible) {
+      setFocus();
+    }
+  }, [formVisible, setFocus]);
 
   const submitQuery = () => {
     if (!query) {
@@ -24,6 +42,9 @@ function SearchWidget() {
     if (formVisible && query) {
       submitQuery();
     } else {
+      if (formVisible) {
+        setFocus();
+      }
       setFormVisibility((prev) => !prev);
     }
   };
@@ -50,7 +71,13 @@ function SearchWidget() {
         className={classNames('header-controls-search-form form-inline', { invisible: !formVisible })}
         onSubmit={handleSubmit}
       >
-        <input className="form-control" placeholder="Поиск" onChange={handleChange} value={query} />
+        <input
+          className="form-control"
+          placeholder="Поиск"
+          onChange={handleChange}
+          value={query}
+          ref={inputRef}
+        />
       </form>
     </>
   );

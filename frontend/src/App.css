@@ -722,7 +722,7 @@ h2,
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .header-controls-search-form {
     top: auto;
     bottom: 5px;
@@ -744,7 +744,9 @@ h2,
   .banner-header {
     margin-bottom: 0.5em;
   }
+}
 
+@media (min-width: 768px) and (max-width: 992px) {
   .header-controls-search-form {
     width: 410px;
   }
