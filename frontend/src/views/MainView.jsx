@@ -9,10 +9,8 @@ function MainView() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('[MainView] useEffect');
-
     dispatch(changeCategoryId(null));
-    dispatch(changeSearchQuery(null));
+    dispatch(changeSearchQuery(''));
     dispatch(productsReadRequest({ categoryId: null, q: '' }));
   }, [dispatch]);
 

@@ -17,11 +17,11 @@ const initialState = {
   loading: false,
   loadingNext: false,
   error: null,
-  /* Current filter of loaded items */
+  /* Current filter of loaded items. Useful to load more data if available */
   current: { ...defaultFilter },
-  /* Currently sending filter */
-  sending: { ...defaultFilter },
-  /* Form data */
+  /* Requested filter. Request may fail, so this data is used to retry */
+  request: { ...defaultFilter },
+  /* Filter form data */
   form: { ...defaultForm },
   moreAvailable: true,
 };
@@ -38,11 +38,11 @@ const productsSlice = createSlice({
       loading: true,
       items: null,
       error: null,
-      sending: { ...action.payload },
+      request: { ...action.payload },
     }),
     productsReadSuccess: (state, action) => {
       const { data } = action.payload;
-      const { offset, ...rest } = state.sending;
+      const { offset, ...rest } = state.request;
 
       const newState = {
         ...state,
@@ -67,7 +67,7 @@ const productsSlice = createSlice({
     }),
     readNextSuccess: (state, action) => {
       const { data } = action.payload;
-      const { offset, ...rest } = state.sending;
+      const { offset, ...rest } = state.request;
 
       const newState = {
         ...state,
@@ -89,14 +89,14 @@ const productsSlice = createSlice({
       ...state,
       form: {
         ...state.form,
-        q: action.payload,
+        q: (typeof action.payload === 'string') ? action.payload : '',
       },
     }),
     changeCategoryId: (state, action) => ({
       ...state,
       form: {
         ...state.form,
-        categoryId: action.payload,
+        categoryId: (action.payload) ? Number(action.payload) : null,
       },
     }),
   },

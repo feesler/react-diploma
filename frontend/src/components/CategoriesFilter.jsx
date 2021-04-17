@@ -19,8 +19,6 @@ function CategoriesFilter(props) {
   const categories = [noFilterItem, ...items];
   const urlParams = { q: searchQuery };
 
-  console.log('[CategoriesFilter] active: ', active);
-
   const handleClick = (e) => {
     e.preventDefault();
 

@@ -13,10 +13,7 @@ import ProductsList from './ProductsList.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';
 
 function CatalogList(props) {
-  const {
-    search,
-    onFilterChange,
-  } = props;
+  const { search, onFilterChange } = props;
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const products = useSelector((state) => state.products);
@@ -52,7 +49,7 @@ function CatalogList(props) {
     }
 
     if (!products.items) {
-      dispatch(productsReadRequest({ ...products.sending }));
+      dispatch(productsReadRequest({ ...products.request }));
     }
   };
 

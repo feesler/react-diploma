@@ -8,30 +8,26 @@ import { createSearchParams } from '../utils';
 
 function CatalogView() {
   const dispatch = useDispatch();
-  const { sending, current, form } = useSelector((state) => state.products);
+  const { request } = useSelector((state) => state.products);
   const history = useHistory();
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const categoryId = params.get('categoryId') ? Number(params.get('categoryId')) : null;
   const q = params.get('q') ?? '';
 
-  console.log('[CatalogView] location: categoryId: ', categoryId, ' q: ', q, ' (', (typeof q), ')');
-  console.log('[CatalogView] form: ', form, ' current: ', current, ' sending: ', sending);
-
+  /* Update form values on change search parameters */
   useEffect(() => {
-    console.log('[CatalogView] location changed!');
-
-    if (sending.categoryId !== categoryId) {
+    if (request.categoryId !== categoryId) {
       dispatch(changeCategoryId(categoryId));
     }
-    if (sending.q !== q) {
+    if (request.q !== q) {
       dispatch(changeSearchQuery(q));
     }
 
-    if (sending.q !== q || sending.categoryId !== categoryId) {
+    if (request.q !== q || request.categoryId !== categoryId) {
       dispatch(productsReadRequest({ categoryId, q }));
     }
-  }, [dispatch, q, categoryId, sending.q, sending.categoryId]);
+  }, [dispatch, q, categoryId, request.q, request.categoryId]);
 
   const handleFilterChange = (options) => {
     const searchParams = createSearchParams(options);
