@@ -711,6 +711,7 @@ h2,
   .catalog-item-table {
     max-width: 100%;
     flex: 1 1 auto;
+    margin-top: 1rem;
   }
 
   .cards-row {
