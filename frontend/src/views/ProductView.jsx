@@ -4,36 +4,43 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import View from './View.jsx';
 import Preloader from '../components/Preloader.jsx';
-import { detailsReadRequest, selectSize, setQuantity } from '../store/productDetailsSlice';
+import { getProductById } from '../store/productsSlice';
+import {
+  detailsReadRequest,
+  selectSize,
+  setQuantity,
+} from '../store/productDetailsSlice';
 import { addToCart } from '../store/cartSlice';
 import ImageLoader from '../components/ImageLoader.jsx';
+
+const getAvailSizes = (item) => (
+  (item && item.sizes)
+    ? item.sizes.filter((sz) => sz.avalible)
+    : []
+);
 
 function ProductView() {
   const { id } = useParams();
   const history = useHistory();
+  const dispatch = useDispatch();
   const {
     item,
     loading,
+    error,
     selectedSize,
     quantity,
   } = useSelector((state) => state.details);
-  const dispatch = useDispatch();
-
-  const availSizes = (!loading && item.sizes) ? item.sizes.filter((sz) => sz.avalible) : [];
+  const availSizes = getAvailSizes(item);
+  const productItem = useSelector(getProductById(Number(id)));
+  const imageItem = productItem ?? item;
 
   useEffect(() => {
     dispatch(detailsReadRequest(id));
   }, [dispatch, id]);
 
-  if (loading) {
-    return (
-      <View>
-        <section className="catalog-item">
-          <Preloader />
-        </section>
-      </View>
-    );
-  }
+  const handleRetry = () => {
+    dispatch(detailsReadRequest(id));
+  };
 
   const handleSizeClick = (e) => {
     dispatch(selectSize(e.target.dataset.size));
@@ -67,42 +74,53 @@ function ProductView() {
   return (
     <View>
       <section className="catalog-item">
-        <h2 className="text-center">{item.title}</h2>
+        <h2 className="text-center">{item && item.title}</h2>
         <div className="row">
           <div className="col-5 catalog-item-image">
-            {item && item.id
-              && <ImageLoader id={item.id} title={item.title} images={item.images} />}
+            {imageItem && imageItem.id
+              && (
+                <ImageLoader
+                  id={imageItem.id}
+                  title={imageItem.title}
+                  images={imageItem.images}
+                />
+              )
+            }
           </div>
           <div className="col-7 catalog-item-table">
-            <table className="table table-bordered">
-              <tbody>
-                <tr>
-                  <td>Артикул</td>
-                  <td>{item.sku}</td>
-                </tr>
-                <tr>
-                  <td>Производитель</td>
-                  <td>{item.manufacturer}</td>
-                </tr>
-                <tr>
-                  <td>Цвет</td>
-                  <td>{item.color}</td>
-                </tr>
-                <tr>
-                  <td>Материалы</td>
-                  <td>{item.material}</td>
-                </tr>
-                <tr>
-                  <td>Сезон</td>
-                  <td>{item.season}</td>
-                </tr>
-                <tr>
-                  <td>Повод</td>
-                  <td>{item.reason}</td>
-                </tr>
-              </tbody>
-            </table>
-            {(availSizes.length > 0)
+            {item
+              && (
+                <table className="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td>Артикул</td>
+                      <td>{item.sku}</td>
+                    </tr>
+                    <tr>
+                      <td>Производитель</td>
+                      <td>{item.manufacturer}</td>
+                    </tr>
+                    <tr>
+                      <td>Цвет</td>
+                      <td>{item.color}</td>
+                    </tr>
+                    <tr>
+                      <td>Материалы</td>
+                      <td>{item.material}</td>
+                    </tr>
+                    <tr>
+                      <td>Сезон</td>
+                      <td>{item.season}</td>
+                    </tr>
+                    <tr>
+                      <td>Повод</td>
+                      <td>{item.reason}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              )
+            }
+            {item && availSizes.length > 0
               && (
                 <>
                   <div className="text-center">
@@ -126,6 +144,19 @@ function ProductView() {
                     </p>
                   </div>
                   <button className="btn btn-danger btn-block btn-lg" disabled={!selectedSize} onClick={handleSubmit}>В корзину</button>
+                </>
+              )
+            }
+
+            {loading && <Preloader />}
+
+            {error
+              && (
+                <>
+                  <div className="text-center error-message">Произошла ошибка. Проверьте соединение и попробуйте повторить позднее.</div>
+                  <div className="text-center">
+                    <button className="btn btn-outline-primary" onClick={handleRetry}>Повторить</button>
+                  </div>
                 </>
               )
             }

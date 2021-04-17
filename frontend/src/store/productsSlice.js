@@ -28,6 +28,11 @@ const initialState = {
 
 /* Selectors */
 export const getProducts = (state) => state.products;
+export const getProductById = (id) => (state) => (
+  (state.products.items)
+    ? state.products.items.find((item) => item.id === id)
+    : null
+);
 
 const productsSlice = createSlice({
   name: 'products',

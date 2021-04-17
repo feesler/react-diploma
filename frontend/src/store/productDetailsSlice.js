@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  item: {},
+  item: null,
   loading: false,
   error: null,
   selectedSize: null,
@@ -14,6 +14,7 @@ const productDetailsSlice = createSlice({
   reducers: {
     detailsReadRequest: (state) => ({
       ...state,
+      item: null,
       loading: true,
       error: null,
     }),
