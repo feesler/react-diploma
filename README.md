@@ -1,4 +1,5 @@
 # Netology React Course Diploma
+[![Build status](https://ci.appveyor.com/api/projects/status/g0mfym0njr2ouq5q?svg=true)](https://ci.appveyor.com/project/feesler/react-diploma)
 
 ## Materials
 
