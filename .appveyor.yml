@@ -5,8 +5,13 @@ stack: node 15
 branches:
   only:
     - master
+    - dev
 
 cache: node_modules
+
+environment:
+  access_token:
+    secure: $GITHUB_TOKEN
 
 install:
   - cd frontend
@@ -24,5 +29,8 @@ deploy_script:
   - git config --global credential.helper store
   - git config --global user.name "Ilya Makarov"
   - git config --global user.email feesler@gmail.com
-  - echo "https://%GITHUB_TOKEN%:x-oauth-basic@github.com" > "$HOME/.git-credentials"
+  - ps: echo $env:TEST_VAR
+  - ps: echo $env:SECURE_TEST_VAR
+  - ps: echo $($env:SECURE_TEST_VAR)
+  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
   - npx push-dir --dir=build --branch=gh-pages --force --verbose
