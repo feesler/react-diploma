@@ -10,8 +10,7 @@ branches:
 cache: node_modules
 
 environment:
-  access_token:
-    secure: $env:GITHUB_TOKEN
+  access_token: $env:GITHUB_TOKEN
 
 install:
   - cd frontend
