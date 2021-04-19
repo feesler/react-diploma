@@ -8,6 +8,10 @@ branches:
 
 cache: node_modules
 
+environment:
+  access_token:
+    secure: $(auth_token)
+
 install:
   - cd frontend
   - npm install
@@ -24,5 +28,5 @@ deploy_script:
   - git config --global credential.helper store
   - git config --global user.name "Ilya Makarov"
   - git config --global user.email feesler@gmail.com
-  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:auth_token):x-oauth-basic@github.com`n" -NoNewline
+  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
   - npx push-dir --dir=build --branch=gh-pages --force --verbose
