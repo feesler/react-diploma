@@ -11,7 +11,7 @@ cache: node_modules
 
 environment:
   access_token:
-    secure: 6EXCtoA+FTPpdghZRWudrk5c8vfGMO/VuqC9+O3y2FHl0M18D5U6Qfqkm3AYCyAS
+    secure: $env:GITHUB_TOKEN
 
 install:
   - cd frontend
