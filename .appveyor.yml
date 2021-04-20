@@ -5,7 +5,6 @@ stack: node 15
 branches:
   only:
     - master
-    - dev
 
 cache: node_modules
 
@@ -26,5 +25,4 @@ deploy_script:
   - git config --global user.name "Ilya Makarov"
   - git config --global user.email feesler@gmail.com
   - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:GITHUB_TOKEN):x-oauth-basic@github.com`n" -NoNewline
-  - ps: Get-Content -Path "$HOME\.git-credentials"
   - npx push-dir --dir=build --branch=gh-pages --force --verbose
