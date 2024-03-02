@@ -36,16 +36,16 @@ function Header() {
             >
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/" exact activeClassName="active">Главная</NavLink>
+                  <NavLink className="nav-link" to="/">Главная</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/catalog.html" activeClassName="active">Каталог</NavLink>
+                  <NavLink className="nav-link" to="/catalog.html">Каталог</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/about.html" activeClassName="active">О магазине</NavLink>
+                  <NavLink className="nav-link" to="/about.html">О магазине</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/contacts.html" activeClassName="active">Контакты</NavLink>
+                  <NavLink className="nav-link" to="/contacts.html">Контакты</NavLink>
                 </li>
               </ul>
               <div>

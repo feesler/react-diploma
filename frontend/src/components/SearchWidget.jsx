@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { changeSearchQuery } from '../store/productsSlice';
 
 const useFocus = () => {
@@ -18,7 +18,7 @@ const useFocus = () => {
 function SearchWidget() {
   const [formVisible, setFormVisibility] = useState(false);
   const [query, setQuery] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [inputRef, setFocus] = useFocus();
 
@@ -34,7 +34,7 @@ function SearchWidget() {
     }
 
     dispatch(changeSearchQuery(query));
-    history.push(`catalog.html?q=${query}`);
+    navigate(`catalog.html?q=${query}`);
     setQuery('');
   };
 

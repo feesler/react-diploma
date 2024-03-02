@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import View from './View.jsx';
 import Preloader from '../components/Preloader.jsx';
@@ -21,7 +21,7 @@ const getAvailSizes = (item) => (
 
 function ProductView() {
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     item,
@@ -68,7 +68,7 @@ function ProductView() {
     };
 
     dispatch(addToCart(cartItem));
-    history.push('../cart.html');
+    navigate('../cart.html');
   };
 
   return (

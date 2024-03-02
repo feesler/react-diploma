@@ -1,13 +1,13 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function CartWidget() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { items } = useSelector((state) => state.cart);
 
   const handleClick = () => {
-    history.push('/cart.html');
+    navigate('/cart.html');
   };
 
   return (

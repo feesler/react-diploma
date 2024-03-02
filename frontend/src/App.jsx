@@ -1,5 +1,5 @@
 import './App.css';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import MainView from './views/MainView.jsx';
 import CatalogView from './views/CatalogView.jsx';
 import AboutView from './views/AboutView.jsx';
@@ -10,18 +10,16 @@ import ProductView from './views/ProductView.jsx';
 
 function App() {
   return (
-    <Switch>
-      <Route path="/" exact component={MainView} />
-      <Route path="/catalog.html" component={CatalogView} />
-      <Route path="/products/:id.html" component={ProductView} />
-      <Route path="/cart.html" exact component={CartView} />
-      <Route path="/about.html" exact component={AboutView} />
-      <Route path="/contacts.html" exact component={ContactsView} />
-      <Route path="/404.html" exact component={Page404} />
-      <Route>
-        <Redirect to="/404.html" />
-      </Route>
-    </Switch>
+    <Routes>
+      <Route path="/" Component={MainView} />
+      <Route path="/catalog.html" Component={CatalogView} />
+      <Route path="/products/:id.html" Component={ProductView} />
+      <Route path="/cart.html" Component={CartView} />
+      <Route path="/about.html" Component={AboutView} />
+      <Route path="/contacts.html" Component={ContactsView} />
+      <Route path="/404.html" Component={Page404} />
+      <Route path="/*" element={<Navigate to="/404.html" />} />
+    </Routes>
   );
 }
 

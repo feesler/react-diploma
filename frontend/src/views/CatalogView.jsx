@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import View from './View.jsx';
 import CatalogList from '../components/CatalogList.jsx';
 import { changeCategoryId, changeSearchQuery, productsReadRequest } from '../store/productsSlice';
@@ -9,7 +9,7 @@ import { createSearchParams } from '../utils';
 function CatalogView() {
   const dispatch = useDispatch();
   const { request } = useSelector((state) => state.products);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const categoryId = params.get('categoryId') ? Number(params.get('categoryId')) : null;
@@ -31,7 +31,7 @@ function CatalogView() {
 
   const handleFilterChange = (options) => {
     const searchParams = createSearchParams(options);
-    history.push(`catalog.html?${searchParams}`);
+    navigate(`catalog.html?${searchParams}`);
   };
 
   return (

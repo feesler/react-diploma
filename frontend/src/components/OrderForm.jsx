@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { changeOrderField, invalidateField, orderRequest } from '../store/cartSlice';
 import Preloader from './Preloader.jsx';
 
@@ -19,7 +19,7 @@ function OrderForm() {
     error,
   } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const field = { name: e.target.id };
@@ -51,7 +51,7 @@ function OrderForm() {
       items: items.map((item) => ({ id: item.id, price: item.price, count: item.quantity })),
     };
 
-    dispatch(orderRequest({ order, history }));
+    dispatch(orderRequest({ order, navigate }));
   };
 
   if (!items.length) {

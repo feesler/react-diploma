@@ -27,7 +27,7 @@ const store = configureStore({
     images: imagesReducer,
     cart: cartReducer,
   },
-  middleware: [sagaMiddleware, localStorageMiddleware],
+  middleware: () => ([sagaMiddleware, localStorageMiddleware]),
   preloadedState,
 });
 
