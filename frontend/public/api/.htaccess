@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteBase /netology/diploma/api/
+
+RewriteRule ^(.*)$ index.php?route=$1 [L,QSA]

@@ -39,7 +39,7 @@ function CategoriesFilter(props) {
           <li key={`cat_${item.id}`} className="nav-item">
             <Link
               className={classNames('nav-link', { active: item.id === active })}
-              to={`catalog.html?${params}`}
+              to={`/catalog.html?${params}`}
               data-id={item.id}
               onClick={handleClick}
             >{item.title}</Link>

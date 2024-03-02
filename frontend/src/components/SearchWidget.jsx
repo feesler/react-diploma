@@ -34,7 +34,7 @@ function SearchWidget() {
     }
 
     dispatch(changeSearchQuery(query));
-    navigate(`catalog.html?q=${query}`);
+    navigate(`/catalog.html?q=${query}`);
     setQuery('');
   };
 

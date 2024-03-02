@@ -12,7 +12,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" Component={MainView} />
-      <Route path="/catalog.html" Component={CatalogView} />
+      <Route path="/catalog.html/*" Component={CatalogView} />
       <Route path="/products/:id.html" Component={ProductView} />
       <Route path="/cart.html" Component={CartView} />
       <Route path="/about.html" Component={AboutView} />

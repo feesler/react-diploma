@@ -31,7 +31,7 @@ function CatalogView() {
 
   const handleFilterChange = (options) => {
     const searchParams = createSearchParams(options);
-    navigate(`catalog.html?${searchParams}`);
+    navigate(`/catalog.html?${searchParams}`);
   };
 
   return (
