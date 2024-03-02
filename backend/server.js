@@ -3,7 +3,7 @@ const fs = require('fs');
 const Koa = require('koa');
 const Router = require('koa-router');
 const cors = require('koa2-cors');
-const koaBody = require('koa-body');
+const { koaBody } = require('koa-body');
 
 const categories = JSON.parse(fs.readFileSync('./data/categories.json'));
 const items = JSON.parse(fs.readFileSync('./data/products.json'));
@@ -20,7 +20,7 @@ const itemBasicMapper = item => ({
 
 const randomNumber = (start, stop) => {
     return Math.floor(Math.random() * (stop - start + 1)) + start;
-}
+};
 
 const fortune = (ctx, body = null, status = 200) => {
     // Uncomment for delay
@@ -38,8 +38,8 @@ const fortune = (ctx, body = null, status = 200) => {
             ctx.response.body = body;
             resolve();
         }, delay);
-    })
-}
+    });
+};
 
 const app = new Koa();
 app.use(cors());
@@ -112,7 +112,7 @@ router.post('/api/order', async (ctx, next) => {
     return fortune(ctx, null, 204);
 });
 
-app.use(router.routes())
+app.use(router.routes());
 app.use(router.allowedMethods());
 
 const port = process.env.PORT || 7070;
