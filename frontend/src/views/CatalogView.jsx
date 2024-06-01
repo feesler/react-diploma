@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import View from './View.jsx';
 import CatalogList from '../components/CatalogList.jsx';
-import { changeCategoryId, changeSearchQuery, productsReadRequest } from '../store/productsSlice';
-import { createSearchParams } from '../utils';
+import { changeCategoryId, changeSearchQuery, productsReadRequest } from '../store/productsSlice.js';
+import { createSearchParams } from '../utils/index.js';
 
 function CatalogView() {
   const dispatch = useDispatch();

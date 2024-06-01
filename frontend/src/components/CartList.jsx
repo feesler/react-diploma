@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeByIndex } from '../store/cartSlice';
+import { removeByIndex } from '../store/cartSlice.js';
 
 function CartList() {
   const { items } = useSelector((state) => state.cart);

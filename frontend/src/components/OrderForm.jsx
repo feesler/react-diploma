@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { changeOrderField, invalidateField, orderRequest } from '../store/cartSlice';
+import { changeOrderField, invalidateField, orderRequest } from '../store/cartSlice.js';
 import Preloader from './Preloader.jsx';
 
 const orderCardStyle = {

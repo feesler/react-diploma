@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { categoriesReadRequest } from '../store/categoriesSlice';
+import { categoriesReadRequest } from '../store/categoriesSlice.js';
 import {
   productsReadRequest,
   readNext,
   changeSearchQuery,
   changeCategoryId,
-} from '../store/productsSlice';
+} from '../store/productsSlice.js';
 import Preloader from './Preloader.jsx';
 import ProductsList from './ProductsList.jsx';
 import CategoriesFilter from './CategoriesFilter.jsx';

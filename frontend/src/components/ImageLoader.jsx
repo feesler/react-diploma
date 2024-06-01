@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductImage, validateImage } from '../store/imagesSlice';
+import { getProductImage, validateImage } from '../store/imagesSlice.js';
 
 function ImageLoader(props) {
   const { id, title, images } = props;

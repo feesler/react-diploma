@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { topSalesReadRequest } from '../store/topSalesSlice';
+import { topSalesReadRequest } from '../store/topSalesSlice.js';
 import Preloader from './Preloader.jsx';
 import ProductsList from './ProductsList.jsx';
 

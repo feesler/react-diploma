@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import View from './View.jsx';
 import Preloader from '../components/Preloader.jsx';
-import { getProductById } from '../store/productsSlice';
+import { getProductById } from '../store/productsSlice.js';
 import {
   detailsReadRequest,
   selectSize,
   setQuantity,
-} from '../store/productDetailsSlice';
-import { addToCart } from '../store/cartSlice';
+} from '../store/productDetailsSlice.js';
+import { addToCart } from '../store/cartSlice.js';
 import ImageLoader from '../components/ImageLoader.jsx';
 
 const getAvailSizes = (item) => (

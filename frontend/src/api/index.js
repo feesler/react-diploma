@@ -1,4 +1,4 @@
-import { createSearchParams } from '../utils';
+import { createSearchParams } from '../utils/index.js';
 
 const topSalesURL = process.env.REACT_APP_TOP_SALES_URL;
 const categoriesURL = process.env.REACT_APP_CATEGORIES_URL;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { changeSearchQuery } from '../store/productsSlice';
+import { changeSearchQuery } from '../store/productsSlice.js';
 
 const useFocus = () => {
   const ref = useRef(null);

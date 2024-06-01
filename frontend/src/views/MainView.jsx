@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import View from './View.jsx';
 import CatalogList from '../components/CatalogList.jsx';
 import TopSales from '../components/TopSales.jsx';
-import { productsReadRequest, changeCategoryId, changeSearchQuery } from '../store/productsSlice';
+import { productsReadRequest, changeCategoryId, changeSearchQuery } from '../store/productsSlice.js';
 
 function MainView() {
   const dispatch = useDispatch();

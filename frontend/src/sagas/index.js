@@ -10,12 +10,12 @@ import {
   topSalesReadRequest,
   topSalesReadSuccess,
   topSalesReadFailure,
-} from '../store/topSalesSlice';
+} from '../store/topSalesSlice.js';
 import {
   categoriesReadRequest,
   categoriesReadSuccess,
   categoriesReadFailure,
-} from '../store/categoriesSlice';
+} from '../store/categoriesSlice.js';
 import {
   productsReadRequest,
   productsReadSuccess,
@@ -24,24 +24,24 @@ import {
   readNextSuccess,
   readNextFailure,
   getProducts,
-} from '../store/productsSlice';
+} from '../store/productsSlice.js';
 import {
   detailsReadRequest,
   detailsReadSuccess,
   detailsReadFailure,
-} from '../store/productDetailsSlice';
+} from '../store/productDetailsSlice.js';
 import {
   orderRequest,
   orderRequestSuccess,
   orderRequestFailure,
-} from '../store/cartSlice';
+} from '../store/cartSlice.js';
 import {
   requestTopSales,
   requestCategories,
   requestItems,
   requestItemDetails,
   submitOrder,
-} from '../api';
+} from '../api/index.js';
 
 const retryCount = 3;
 const retryDelay = 1000;
